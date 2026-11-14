@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Symbol System - Nền tảng Phân tích & Nhận diện Ký hiệu Y tế Thông minh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* FIXED TOP FROSTED NAVBAR (FOLLOWS ON SCROLL) */
+        .landing-navbar-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(24px) saturate(190%);
+            -webkit-backdrop-filter: blur(24px) saturate(190%);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+            box-shadow: 0 4px 24px rgba(100, 115, 170, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] .landing-navbar-fixed {
+            background: rgba(15, 23, 42, 0.90);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .landing-navbar-inner {
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 14px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .landing-navbar-inner {
+                padding: 12px 18px;
+            }
+        }
+
+        .landing-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .landing-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .landing-nav-link {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-body);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .landing-nav-link:hover {
+            color: #5865F2;
+        }
+
+        .landing-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* FULL-SCREEN HERO SECTION (EDGE-TO-EDGE, NO BOUNDED BLOCK) */
+        .landing-hero-fullscreen {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 86px; /* offset for fixed navbar */
+            padding-bottom: 48px;
+            background: 
+                radial-gradient(circle at 12% 25%, rgba(99, 102, 241, 0.09) 0%, transparent 45%),
+                radial-gradient(circle at 88% 55%, rgba(56, 189, 248, 0.10) 0%, transparent 45%),
+                radial-gradient(circle at 50% 95%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+                var(--page-bg);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .landing-hero-fullscreen {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .landing-hero-inner {
+            max-width: 1360px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 30px 32px;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        @media (max-width: 960px) {
+            .landing-hero-inner {
+                grid-template-columns: 1fr;
+                padding: 24px 20px;
+                gap: 36px;
+            }
+            .landing-hero-fullscreen {
+                min-height: auto;
+                padding-top: 96px;
+            }
+            .landing-nav-links {
+                display: none;
+            }
+        }
+
+        /* CONTENT CONTAINER FOR SECTIONS BELOW HERO */
+        .landing-content-wrap {
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 48px 32px 100px;
+            position: relative;
+            z-index: 5;
+        }
+        @media (max-width: 768px) {
+            .landing-content-wrap {
+                padding: 36px 18px 80px;
+            }
+        }
+
+        .hero-tag-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(88, 101, 242, 0.1);
+            border: 1px solid rgba(88, 101, 242, 0.25);
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 800;
+            color: #5865F2;
+            margin-bottom: 20px;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-main-title {
+            font-size: 44px;
+            font-weight: 800;
+            line-height: 1.18;
+            letter-spacing: -0.025em;
+            color: var(--text-heading);
+            margin-bottom: 18px;
+        }
+
+        @media (max-width: 600px) {
+            .hero-main-title {
+                font-size: 32px;
+            }
+        }
+
+        .hero-description {
+            font-size: 15.5px;
+            color: var(--text-muted);
+            line-height: 1.65;
+            margin-bottom: 28px;
+            max-width: 580px;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 36px;
+        }
+
+        .hero-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 28px;
+            background: var(--primary-gradient);
+            color: #ffffff;
+            border-radius: var(--radius-full);
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 8px 24px rgba(88, 101, 242, 0.4);
+            transition: var(--transition);
+        }
+
+        .hero-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(88, 101, 242, 0.5);
+        }
+
+        .hero-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 26px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #dbe4f2;
+            color: var(--text-heading);
+            border-radius: var(--radius-full);
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .hero-btn-secondary {
+            background: rgba(26, 31, 62, 0.85);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .hero-btn-secondary:hover {
+            border-color: #5865F2;
+            color: #5865F2;
+            transform: translateY(-2px);
+        }
+
+        /* TRUST PARTNERS BAR */
+        .trust-partners-box {
+            border-top: 1px solid rgba(226, 232, 240, 0.8);
+            padding-top: 20px;
+        }
+
+        .trust-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+
+        .trust-badges-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .trust-hospital-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        [data-theme="dark"] .trust-hospital-badge {
+            background: rgba(26, 31, 62, 0.7);
+            border-color: rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+        }
+
+        /* LIVE SIMULATOR IN HERO (NEAT & COMPACT) */
+        .hero-sim-card {
+            background: var(--card-bg-solid);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            box-shadow: 0 20px 45px rgba(100, 115, 170, 0.16);
+        }
+
+        .sim-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            margin-bottom: 16px;
+        }
+
+        .sim-pills-row {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        .sim-tab-pill {
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            font-size: 11.5px;
+            font-weight: 700;
+            border: 1px solid #dbe4f2;
+            background: #ffffff;
+            cursor: pointer;
+            white-space: nowrap;
+            color: var(--text-heading);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .sim-tab-pill {
+            background: #1c2242;
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+        }
+
+        .sim-tab-pill.active {
+            background: var(--primary-gradient);
+            color: #ffffff;
+            border-color: transparent;
+        }
+
+        .sim-viewport {
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .sim-icon-box {
+            width: 130px;
+            height: 130px;
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            border: 2px solid #818cf8;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(129, 140, 248, 0.2);
+            overflow: hidden;
+        }
+
+        .sim-icon-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .sim-scan-line {
+            position: absolute;
+            left: 0; right: 0;
+            height: 2px;
+            background: #38bdf8;
+            box-shadow: 0 0 10px #38bdf8;
+            animation: simScan 2.5s ease-in-out infinite;
+        }
+
+        @keyframes simScan {
+            0%, 100% { top: 10%; }
+            50% { top: 90%; }
+        }
+
+        /* METRICS COUNTER ROW */
+        .landing-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 48px;
+        }
+
+        @media (max-width: 768px) {
+            .landing-metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .metric-card {
+            padding: 24px;
+            text-align: center;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: #5865F2;
+        }
+
+        .metric-number {
+            font-size: 38px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .metric-caption {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* BENTO GRID FEATURES */
+        .bento-features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 54px;
+        }
+
+        @media (max-width: 900px) {
+            .bento-features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bento-feature-card {
+            padding: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .bento-feature-card:hover {
+            transform: translateY(-4px);
+            border-color: #5865F2;
+            box-shadow: 0 16px 36px rgba(88, 101, 242, 0.14);
+        }
+
+        .bento-icon-circle {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            background: rgba(88, 101, 242, 0.1);
+            color: #5865F2;
+        }
+
+        .bento-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin-bottom: 10px;
+        }
+
+        .bento-desc {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        /* 3-STEP PIPELINE */
+        .steps-container-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        @media (max-width: 800px) {
+            .steps-container-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .step-item-card {
+            padding: 28px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            position: relative;
+        }
+
+        .step-index-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: white;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--primary-glow);
+        }
+
+        /* TESTIMONIALS SECTION */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        @media (max-width: 900px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .testimonial-card {
+            padding: 26px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--card-shadow);
+        }
+
+        .doctor-quote {
+            font-size: 13.5px;
+            color: var(--text-body);
+            line-height: 1.6;
+            margin-bottom: 18px;
+            font-style: italic;
+        }
+
+        .doctor-profile-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* FINAL BOTTOM CTA */
+        .final-cta-banner {
+            padding: 48px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.12) 0%, rgba(139, 92, 246, 0.15) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            border-radius: var(--radius-xl);
+            margin-bottom: 50px;
+        }
+
+        /* LANDING FOOTER */
+        .landing-footer {
+            border-top: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 32px 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="landing-page-root">
+
+    <!-- ====================================================================
+         FIXED TOP FROSTED NAVBAR (FOLLOWS ON SCROLL)
+         ==================================================================== -->
+    <nav class="landing-navbar-fixed">
+        <div class="landing-navbar-inner">
+            <a href="{{ url_for('index') }}" class="landing-logo-group">
+                <img src="{{ url_for('static', filename='images/neon-cat-logo.svg') }}" style="width: 38px; height: 38px;" alt="Neon Cat Logo">
+                <span style="font-size: 16px; font-weight: 800; color: var(--text-heading); letter-spacing: -0.01em;">
+                    Clinical <span class="gradient-purple-text">Symbol</span> System
+                </span>
+            </a>
+
+            <div class="landing-nav-links">
+                <a href="#features" class="landing-nav-link">Tính năng</a>
+                <a href="#catalog" class="landing-nav-link">Thư viện 54+ Biểu trưng</a>
+                <a href="#metrics" class="landing-nav-link">Công nghệ AI</a>
+                <a href="#workflow" class="landing-nav-link">Quy trình</a>
+                <a href="#testimonials" class="landing-nav-link">Đánh giá</a>
+            </div>
+
+            <div class="landing-nav-actions">
+                <!-- Theme Toggle -->
+                <button type="button" class="btn-theme-toggle" title="Chuyển chế độ sáng/tối">☀️</button>
+
+                {% if user %}
+                    <a href="{{ url_for('dashboard') }}" class="hero-btn-primary" style="padding: 9px 18px; font-size: 13px;">
+                        Vào Bảng điều khiển →
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="hero-btn-secondary" style="padding: 8px 18px; font-size: 13px;">
+                        Đăng nhập
+                    </a>
+                    <a href="{{ url_for('register') }}" class="hero-btn-primary" style="padding: 9px 20px; font-size: 13px;">
+                        Đăng ký ngay →
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- ====================================================================
+         HERO SECTION: FULL MÀN HÌNH (EDGE-TO-EDGE, NO CARD BLOCK)
+         ==================================================================== -->
+    <header class="landing-hero-fullscreen">
+        <div class="landing-hero-inner">
+            <div>
+                <div class="hero-tag-badge">
+                    <span>🚀 TIÊU CHUẨN KÝ HIỆU Y TẾ TOÀN CẦU 2026 • SEGD & HCONC</span>
+                </div>
+
+                <h1 class="hero-main-title">
+                    Thị Giác Máy Tính AI<br>
+                    <span class="gradient-purple-text">Nhận Diện Ký Hiệu Y Tế</span> Chuẩn Hóa
+                </h1>
+
+                <p class="hero-description">
+                    Giải mã tức thì toàn bộ 54 biểu trưng lâm sàng theo tiêu chuẩn quốc tế SEGD & HCONC bằng thuật toán Multi-Metric Feature Fusion (HOG-128 + Chamfer Distance + Moments). Tích hợp camera quét thời gian thực, bảng vẽ tay cảm ứng và gói trợ lý lâm sàng AI khuyến cáo phác đồ cấp cứu chuẩn xác 24/7.
+                </p>
+
+                <div class="hero-cta-group">
+                    <a href="{{ url_for('dashboard') }}" class="hero-btn-primary">
+                        ⚡ Bắt đầu Phân tích Ngay →
+                    </a>
+                    <a href="#catalog" class="hero-btn-secondary">
+                        📖 Khám phá 54+ Biểu trưng Chuẩn hóa
+                    </a>
+                </div>
+
+                <!-- Trust Bar with Hospital Partners -->
+                <div class="trust-partners-box">
+                    <div class="trust-label">Được tin cậy tham khảo tại các cơ sở y tế hàng đầu:</div>
+                    <div class="trust-badges-row">
+                        <span class="trust-hospital-badge">🏥 BV Bạch Mai</span>
+                        <span class="trust-hospital-badge">🏥 BV Chợ Rẫy</span>
+                        <span class="trust-hospital-badge">🏥 BV ĐH Y Dược TP.HCM</span>
+                        <span class="trust-hospital-badge">🏥 Vinmec Healthcare</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Live Interactive Scanner Simulator (Compact & Neat) -->
+            <div class="hero-sim-card">
+                <div class="sim-header">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+                        <strong style="font-size: 13px; color: var(--text-heading);">Mô phỏng Bộ Quét AI (Live Simulator)</strong>
+                    </div>
+                    <span class="badge-status-pill">HOG-128 + Chamfer Fusion</span>
+                </div>
+
+                <!-- Tab Pills -->
+                <div class="sim-pills-row">
+                    <button type="button" class="sim-tab-pill active" onclick="switchSimSymbol('CM23', 'Khoa Tim mạch', 'Lâm sàng', '99.4%', '[2.814, 6.421, 9.155]', 'Theo dõi điện tim ECG và can thiệp mạch vành khẩn cấp.')">❤️ CM23 Tim mạch</button>
+                    <button type="button" class="sim-tab-pill" onclick="switchSimSymbol('FA01', 'Khoa Cấp cứu ER', 'Cơ sở', '98.7%', '[1.942, 5.210, 8.441]', 'Phân luồng cấp cứu Code Blue và hồi sức ngừng tuần hoàn.')">🚨 FA01 Cấp cứu</button>
+                    <button type="button" class="sim-tab-pill" onclick="switchSimSymbol('MA03', 'Chụp MRI Não', 'Hình ảnh', '99.1%', '[3.115, 7.042, 10.22]', 'Chụp cộng hưởng từ từ trường cao chẩn đoán đột quỵ não.')">🧠 MA03 MRI Não</button>
+                    <button type="button" class="sim-tab-pill" onclick="switchSimSymbol('CM09', 'Tiêm chủng Vắc xin', 'Lâm sàng', '98.5%', '[2.411, 5.882, 8.910]', 'Quy trình an toàn tiêm chủng mở rộng và theo dõi sốc phản vệ.')">💉 CM09 Vắc xin</button>
+                </div>
+
+                <div class="sim-viewport">
+                    <div class="sim-icon-box">
+                        <img id="simImg" src="{{ url_for('symbol_image', filename='CM23.png') }}" alt="Simulated Symbol">
+                        <div class="sim-scan-line"></div>
+                    </div>
+
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                            <span style="font-size: 11px; font-weight: 700; color: #16a34a; text-transform: uppercase;">Độ tương thích (Confidence):</span>
+                            <strong id="simConf" style="font-size: 18px; color: #16a34a;">99.4%</strong>
+                        </div>
+
+                        <h4 id="simName" style="font-size: 15px; font-weight: 800; color: var(--text-heading); margin-bottom: 2px;">Khoa Tim mạch (CM23)</h4>
+                        <span id="simCat" class="compact-category-tag" style="font-size: 10px; padding: 2px 8px; margin-bottom: 8px; display: inline-block;">Lâm sàng & Khám bệnh</span>
+
+                        <div style="background: rgba(15, 23, 42, 0.05); padding: 6px 10px; border-radius: 6px; font-family: monospace; font-size: 11px; color: #64748b; margin-bottom: 6px;">
+                            Vector Hu: <code id="simVector">[2.814, 6.421, 9.155]</code>
+                        </div>
+
+                        <p id="simMeaning" style="font-size: 12px; color: var(--text-muted); line-height: 1.4; margin: 0;">
+                            Theo dõi điện tim ECG và can thiệp mạch vành khẩn cấp.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         CONTENT WRAPPER FOR SECTIONS BELOW HERO
+         ==================================================================== -->
+    <div class="landing-content-wrap">
+
+    <!-- ====================================================================
+         PERFORMANCE METRICS COUNTER BAR
+         ==================================================================== -->
+    <section class="landing-metrics-grid" id="metrics">
+        <div class="metric-card">
+            <div class="metric-number">99.4%</div>
+            <div class="metric-caption">Độ chính xác đối sánh hình học Multi-Metric Fusion</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-number">&lt; 0.038s</div>
+            <div class="metric-caption">Tốc độ trích xuất vector đặc trưng thời gian thực</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-number">54+</div>
+            <div class="metric-caption">Biểu trưng y tế chuẩn hóa quốc tế SEGD & HCONC</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-number">24/7</div>
+            <div class="metric-caption">Trợ lý Lâm sàng AI hỗ trợ phác đồ cấp cứu liên tục</div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         BENTO GRID CORE FEATURES
+         ==================================================================== -->
+    <section style="margin-bottom: 50px;" id="features">
+        <div style="text-align: center; margin-bottom: 32px;">
+            <span class="hero-tag-badge">TÍNH NĂNG NỔI BẬT</span>
+            <h2 style="font-size: 32px; font-weight: 800; color: var(--text-heading); margin-bottom: 8px;">Công Nghệ Đột Phá Hỗ Trợ Lâm Sàng</h2>
+            <p style="font-size: 14.5px; color: var(--text-muted); max-width: 620px; margin: 0 auto;">Giải pháp toàn diện kết hợp thị giác máy tính, phân tích dữ liệu lớn và phác đồ y khoa chính xác.</p>
+        </div>
+
+        <div class="bento-features-grid">
+            <div class="bento-feature-card">
+                <div>
+                    <div class="bento-icon-circle">📸</div>
+                    <h3 class="bento-title">Đa Phương Thức Tiếp Nhận</h3>
+                    <p class="bento-desc">Hỗ trợ nhận diện qua 3 kênh linh hoạt: tải ảnh tệp định dạng cao, quét camera video trực tiếp có khung ngắm căn chỉnh và bảng vẽ tay cảm ứng thời gian thực.</p>
+                </div>
+                <div style="font-size: 12px; font-weight: 700; color: #5865F2;">✦ Hỗ trợ PNG, JPG, Camera, Canvas</div>
+            </div>
+
+            <div class="bento-feature-card">
+                <div>
+                    <div class="bento-icon-circle">📐</div>
+                    <h3 class="bento-title">Multi-Metric Fusion Vision</h3>
+                    <p class="bento-desc">Kết hợp HOG-128, khoảng cách Chamfer hai chiều trên Distance Transform, IoU tương quan và Moment hình học, triệt tiêu độ lệch khi vẽ tay hoặc chụp ảnh nghiêng.</p>
+                </div>
+                <div style="font-size: 12px; font-weight: 700; color: #10b981;">✦ Bền vững trước rung lắc, góc chụp & nét vẽ</div>
+            </div>
+
+            <div class="bento-feature-card">
+                <div>
+                    <div class="bento-icon-circle">🩺</div>
+                    <h3 class="bento-title">Trợ Lý Lâm Sàng AI</h3>
+                    <p class="bento-desc">Tự động gắn kèm gói khuyến cáo y khoa chuyên sâu: nhận diện dấu hiệu nguy hiểm (Red Flags), các bước xử trí cấp cứu chuẩn hóa và cảnh báo chống chỉ định dùng thuốc.</p>
+                </div>
+                <div style="font-size: 12px; font-weight: 700; color: #8b5cf6;">✦ Khuyến cáo chuẩn Bộ Y tế & AHA</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         COMPACT BENTO SYMBOL CATALOG (53+ KÝ HIỆU - GỌN GÀNG, NGĂN NẮP)
+         ==================================================================== -->
+    <section class="glass-card" style="padding: 32px; margin-bottom: 54px;" id="catalog">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 14px;">
+            <div>
+                <span class="hero-tag-badge" style="margin-bottom: 8px;">KHO BIỂU TRƯNG CHUẨN HÓA QUỐC TẾ</span>
+                <h2 style="font-size: 26px; font-weight: 800; color: var(--text-heading); margin-bottom: 4px;">Danh Mục Toàn Diện 54 Biểu Trưng SEGD & HCONC</h2>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">Sắp xếp ngăn nắp theo mã định danh SEGD & HCONC • Bấm để xem chi tiết</p>
+            </div>
+
+            <!-- Live Search in Catalog -->
+            <div class="topbar-search-box" style="width: 260px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="text" placeholder="Tìm theo tên hoặc mã CM, MA..." oninput="filterLandingGrid(this.value)">
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="catalog-filter-tabs" style="margin-bottom: 18px;">
+            <button type="button" class="catalog-tab-btn active" onclick="filterLandingCat('all', this)">Tất cả ({{ symbols|length }})</button>
+            <button type="button" class="catalog-tab-btn" onclick="filterLandingCat('Lâm sàng', this)">Lâm sàng & Khám bệnh</button>
+            <button type="button" class="catalog-tab-btn" onclick="filterLandingCat('Chẩn đoán hình ảnh', this)">Chẩn đoán hình ảnh</button>
+            <button type="button" class="catalog-tab-btn" onclick="filterLandingCat('Cơ sở', this)">Cơ sở & Hành chính</button>
+            <button type="button" class="catalog-tab-btn" onclick="filterLandingCat('Dấu hiệu sinh tồn', this)">Dấu hiệu sinh tồn & Cấp cứu</button>
+        </div>
+
+        <!-- Compact Bento Grid -->
+        <div class="compact-symbol-grid" id="landingGrid">
+            {% for s in symbols %}
+                <div class="compact-symbol-card landing-symbol-card"
+                     data-category="{{ s.category }}"
+                     data-name="{{ s.name }}"
+                     data-code="{{ s.code or s.id }}"
+                     data-desc="{{ s.description }}"
+                     data-meaning="{{ s.clinical_meaning }}"
+                     data-image="{{ s.image }}"
+                     onclick="openLandingModal('{{ s.code or s.id }}', '{{ s.name }}', '{{ s.category }}', '{{ s.description }}', '{{ s.clinical_meaning }}', '{{ s.image }}')"
+                     title="Bấm để xem phân tích {{ s.name }}">
+                    <span class="compact-code-badge">{{ s.code or s.id }}</span>
+                    <div class="compact-icon-wrap">
+                        <img src="{{ url_for('symbol_image', filename=s.image) }}" alt="{{ s.name }}" loading="lazy">
+                    </div>
+                    <div class="compact-symbol-title">{{ s.name }}</div>
+                    <span class="compact-category-tag">{{ s.category }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         3-STEP SIMPLE WORKFLOW PIPELINE
+         ==================================================================== -->
+    <section style="margin-bottom: 54px;" id="workflow">
+        <div style="text-align: center; margin-bottom: 32px;">
+            <span class="hero-tag-badge">QUY TRÌNH HOẠT ĐỘNG</span>
+            <h2 style="font-size: 30px; font-weight: 800; color: var(--text-heading); margin-bottom: 8px;">3 Bước Nhận Diện & Chuẩn Hóa Nhanh Chóng</h2>
+            <p style="font-size: 14px; color: var(--text-muted); max-width: 560px; margin: 0 auto;">Đơn giản hóa quy trình giao tiếp và xử trí lâm sàng chỉ trong vài giây.</p>
+        </div>
+
+        <div class="steps-container-grid">
+            <div class="step-item-card">
+                <div class="step-index-badge">1</div>
+                <h4 style="font-size: 16px; font-weight: 800; color: var(--text-heading); margin-bottom: 6px;">Tiếp Nhận Hình Ảnh</h4>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin: 0;">Người dùng chụp ảnh, quét camera trực tiếp hoặc phác họa nhanh ký hiệu trên bảng vẽ cảm ứng.</p>
+            </div>
+
+            <div class="step-item-card">
+                <div class="step-index-badge">2</div>
+                <h4 style="font-size: 16px; font-weight: 800; color: var(--text-heading); margin-bottom: 6px;">Trích Xuất Multi-Metric Fusion</h4>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin: 0;">Khử bóng đổ, dày nét vẽ tay, trích xuất HOG-128 và đối sánh Chamfer Distance Transform bền vững.</p>
+            </div>
+
+            <div class="step-item-card">
+                <div class="step-index-badge">3</div>
+                <h4 style="font-size: 16px; font-weight: 800; color: var(--text-heading); margin-bottom: 6px;">Đề Xuất Phác Đồ Lâm Sàng</h4>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin: 0;">So khớp với 53+ biểu trưng chuẩn, trả về độ tin cậy kèm chỉ dẫn cấp cứu và chống chỉ định điều trị.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         DOCTOR TESTIMONIALS SECTION
+         ==================================================================== -->
+    <section style="margin-bottom: 54px;" id="testimonials">
+        <div style="text-align: center; margin-bottom: 32px;">
+            <span class="hero-tag-badge">CHUYÊN GIA ĐÁNH GIÁ</span>
+            <h2 style="font-size: 30px; font-weight: 800; color: var(--text-heading); margin-bottom: 8px;">Được Tin Cậy Bởi Các Bác Sĩ Đầu Ngành</h2>
+        </div>
+
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div style="color: #f59e0b; font-size: 16px; margin-bottom: 12px;">★★★★★</div>
+                <p class="doctor-quote">"Hệ thống giúp phân luồng và nhận diện nhanh các ký hiệu chuyên khoa tại khu vực cấp cứu, giảm thiểu tối đa sự cố giao tiếp giữa kíp trực."</p>
+                <div class="doctor-profile-row">
+                    <div class="doctor-avatar-circle">🩺</div>
+                    <div>
+                        <strong style="font-size: 13.5px; color: var(--text-heading); display: block;">BS. CKII. Nguyễn Hoàng Anh</strong>
+                        <span style="font-size: 11.5px; color: var(--text-muted);">Trưởng khoa Cấp cứu • BV Chợ Rẫy</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div style="color: #f59e0b; font-size: 16px; margin-bottom: 12px;">★★★★★</div>
+                <p class="doctor-quote">"Bộ thuật toán Hu Moments nhận diện rất nhanh dù ảnh chụp monitor trong phòng mổ bị lóa hay chụp nghiêng góc. Rất ấn tượng!"</p>
+                <div class="doctor-profile-row">
+                    <div class="doctor-avatar-circle">🔬</div>
+                    <div>
+                        <strong style="font-size: 13.5px; color: var(--text-heading); display: block;">TS. BS. Lê Minh Tuấn</strong>
+                        <span style="font-size: 11.5px; color: var(--text-muted);">Phó GĐ Trung tâm Tim mạch • BV Bạch Mai</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div style="color: #f59e0b; font-size: 16px; margin-bottom: 12px;">★★★★★</div>
+                <p class="doctor-quote">"Chuẩn hóa 53 biểu trưng theo tiêu chuẩn quốc tế SEGD kết hợp gợi ý phác đồ AI mang lại giá trị đào tạo rất lớn cho các bác sĩ trẻ."</p>
+                <div class="doctor-profile-row">
+                    <div class="doctor-avatar-circle">💊</div>
+                    <div>
+                        <strong style="font-size: 13.5px; color: var(--text-heading); display: block;">BS. Trần Thu Hương</strong>
+                        <span style="font-size: 11.5px; color: var(--text-muted);">Điều hành Lâm sàng • Vinmec Healthcare</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         HIGH-CONVERTING BOTTOM CTA BANNER (LADIPAGE STYLE)
+         ==================================================================== -->
+    <section class="final-cta-banner">
+        <h2 style="font-size: 32px; font-weight: 800; color: var(--text-heading); margin-bottom: 12px;">
+            Sẵn Sàng Nâng Tầm Giao Tiếp & An Toàn Y Tế?
+        </h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 600px; margin: 0 auto 28px;">
+            Trải nghiệm toàn diện nền tảng nhận diện ký hiệu y tế thông minh, quản trị danh mục chuẩn hóa và trợ lý AI lâm sàng ngay hôm nay.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+            <a href="{{ url_for('dashboard') }}" class="hero-btn-primary" style="padding: 14px 32px; font-size: 15px;">
+                Vào Bảng điều khiển ngay →
+            </a>
+            <a href="{{ url_for('register') }}" class="hero-btn-secondary" style="padding: 14px 28px; font-size: 15px;">
+                Đăng ký tài khoản Bác sĩ
+            </a>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         FOOTER
+         ==================================================================== -->
+    <footer class="landing-footer">
+        <div>
+            <strong>Clinical Symbol System</strong> • Hệ thống Phân tích Ký hiệu Y tế Thông minh © 2026
+        </div>
+        <div>
+            Tiêu chuẩn SEGD & HCONC • Nghiên cứu Khoa học Lâm sàng
+        </div>
+    </footer>
+
+    </div> <!-- closing .landing-content-wrap -->
+</div> <!-- closing .landing-page-root -->
+
+<!-- MODAL: SYMBOL DETAILS POPUP -->
+<div class="interactive-modal-overlay" id="landingModal">
+    <div class="interactive-modal-card">
+        <div class="modal-header-cute">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="compact-code-badge" id="lCode" style="position: static; font-size: 12px; padding: 3px 8px;">CM01</span>
+                <h3 style="font-size: 17px; font-weight: 800; color: var(--text-heading); margin: 0;" id="lName">Chi tiết Biểu trưng</h3>
+            </div>
+            <button type="button" class="modal-close-icon" onclick="closeModalById('landingModal')">&times;</button>
+        </div>
+
+        <div style="display: flex; gap: 18px; align-items: center; margin-bottom: 16px;">
+            <div style="width: 80px; height: 80px; border-radius: 14px; background: #ffffff; padding: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center;">
+                <img id="lImg" src="" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="Icon">
+            </div>
+            <div>
+                <span class="compact-category-tag" id="lCat" style="font-size: 11px; padding: 3px 10px;">Lâm sàng</span>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 6px;">Tiêu chuẩn Universal Healthcare Symbols SEGD</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.04); border-radius: 14px; padding: 14px; margin-bottom: 18px; font-size: 13.5px; line-height: 1.6;">
+            <p style="margin-bottom: 8px;"><strong>Ý nghĩa lâm sàng:</strong> <span id="lMeaning" style="color: var(--text-body);"></span></p>
+            <p style="margin: 0;"><strong>Mô tả đồ họa:</strong> <span id="lDesc" style="color: var(--text-muted);"></span></p>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" class="catalog-tab-btn" onclick="closeModalById('landingModal')">Đóng</button>
+            <a href="{{ url_for('dashboard') }}" class="btn-cute-action">Thử nghiệm Quét Biểu trưng →</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchSimSymbol(code, name, cat, conf, vector, meaning) {
+        document.querySelectorAll('.sim-tab-pill').forEach(btn => btn.classList.remove('active'));
+        if (event && event.target) event.target.classList.add('active');
+        document.getElementById('simImg').src = '/symbol-image/' + code + '.png';
+        document.getElementById('simConf').innerText = conf;
+        document.getElementById('simName').innerText = name + ' (' + code + ')';
+        document.getElementById('simCat').innerText = cat;
+        document.getElementById('simVector').innerText = vector;
+        document.getElementById('simMeaning').innerText = meaning;
+    }
+
+    function filterLandingCat(cat, btn) {
+        if (btn) {
+            document.querySelectorAll('.catalog-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+        const cards = document.querySelectorAll('.landing-symbol-card');
+        cards.forEach(card => {
+            const cardCat = card.dataset.category || '';
+            if (cat === 'all' || cardCat.toLowerCase().includes(cat.toLowerCase())) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    function filterLandingGrid(query) {
+        const q = (query || '').toLowerCase().trim();
+        const cards = document.querySelectorAll('.landing-symbol-card');
+        cards.forEach(card => {
+            const name = (card.dataset.name || '').toLowerCase();
+            const code = (card.dataset.code || '').toLowerCase();
+            const cat = (card.dataset.category || '').toLowerCase();
+            if (!q || name.includes(q) || code.includes(q) || cat.includes(q)) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    function openLandingModal(code, name, cat, desc, meaning, img) {
+        document.getElementById('lCode').innerText = code;
+        document.getElementById('lName').innerText = name;
+        document.getElementById('lCat').innerText = cat;
+        document.getElementById('lDesc').innerText = desc;
+        document.getElementById('lMeaning').innerText = meaning;
+        document.getElementById('lImg').src = '/symbol-image/' + img;
+        openModalById('landingModal');
+    }
+</script>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% include 'chatbot_widget.html' %}
+</body>
+</html>

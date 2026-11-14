@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mạng lưới đa chiều - Clinical Symbol System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.4/cytoscape.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .network-workspace {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        #network {
+            height: 520px;
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            border: 1px solid #dbe4f2;
+        }
+
+        .net-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .net-stat-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 18px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 12px rgba(100, 115, 170, 0.05);
+        }
+
+        .net-stat-num {
+            font-size: 26px;
+            font-weight: 800;
+            color: #5865F2;
+            margin-bottom: 4px;
+        }
+
+        .net-stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .legend {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .legend-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .network-workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="app-sidebar" id="appSidebar">
+        <div>
+            <!-- Sidebar Header Row with Toggle Button -->
+            <div class="sidebar-header-row">
+                <button type="button" class="btn-sidebar-toggle" title="Thu gọn / Mở rộng sidebar">❮</button>
+            </div>
+
+            <div class="sidebar-logo">
+                <img src="{{ url_for('static', filename='images/neon-cat-logo.svg') }}" class="logo-glow-cat" alt="Logo">
+                <div class="sidebar-logo-text">Clinical<br>Symbol System</div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('index') }}" class="sidebar-nav-item" title="Trang chủ">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span>Trang chủ</span>
+                </a>
+                <a href="{{ url_for('dashboard') }}" class="sidebar-nav-item" title="Trang nhận diện">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                    <span>Trang nhận diện</span>
+                </a>
+                <a href="{{ url_for('library') }}" class="sidebar-nav-item" title="Thư viện biểu tượng">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+                    <span>Thư viện biểu tượng</span>
+                </a>
+                <a href="{{ url_for('network') }}" class="sidebar-nav-item active" title="Mạng lưới đa chiều">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                    <span>Mạng lưới đa chiều</span>
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <div class="sidebar-brain-widget" onclick="openAIBrainModal()" title="Bấm để xem thông số AI Core">
+                <img src="{{ url_for('static', filename='images/neon-brain.svg') }}" class="brain-icon-glow" alt="AI Brain">
+                <div class="sidebar-brain-title">AI for Better Healthcare</div>
+                <div class="sidebar-brain-sub">Clinical Vision Core 🤍</div>
+            </div>
+
+            <div class="sidebar-user-pill" onclick="openUserProfileModal()" title="Bấm để xem thông tin ca trực">
+                <div class="user-avatar-cat"><span>🐱</span></div>
+                <div class="user-info-text">
+                    <div class="user-display-name">{{ session.get('username') or 'Guest User' }}</div>
+                    <div class="user-display-role">Bác sĩ phụ trách 🩺</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN WORKSPACE -->
+    <main class="app-main">
+
+        <!-- SLEEK LOW-PROFILE TOPBAR -->
+        <header class="glass-card app-topbar-sleek">
+            <div class="topbar-left">
+                <button type="button" class="btn-sidebar-toggle" title="Thu gọn / Mở rộng sidebar">❮</button>
+                <div class="topbar-breadcrumb">
+                    <span>Hệ thống</span> / <span class="crumb-current">Đồ thị Mạng lưới Tri thức Đa chiều</span>
+                </div>
+                <span class="badge-status-pill">● 54 Nút liên kết lâm sàng SEGD</span>
+            </div>
+
+            <div class="topbar-right">
+                <!-- Theme Switcher -->
+                <button type="button" class="btn-theme-toggle" title="Chuyển chế độ sáng/tối">☀️</button>
+
+                <!-- Doctor Profile Pill -->
+                <div class="topbar-doctor-pill" onclick="openUserProfileModal()" title="Xem hồ sơ ca trực">
+                    <div class="doctor-avatar-circle">🐱</div>
+                    <div class="doctor-badge-info">
+                        <span class="doctor-name">{{ session.get('username') or 'doctor_test' }}</span>
+                        <span class="doctor-shift">Bác sĩ phụ trách 🩺</span>
+                    </div>
+                    <a href="{{ url_for('logout') }}" class="btn-logout-mini" onclick="event.stopPropagation()" title="Đăng xuất">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    </a>
+                </div>
+            </div>
+        </header>
+            <div>
+                <h1>Mạng Lưới Biểu Tượng <span class="gradient-purple-text">Đa Chiều</span></h1>
+                <p class="banner-subtitle">Trực quan hóa đồ thị mối quan hệ tương quan giữa các triệu chứng & thiết bị y tế.</p>
+
+                <div class="banner-nav-pills">
+                    <a href="{{ url_for('index') }}" class="banner-pill">Trang chủ</a>
+                    <a href="{{ url_for('dashboard') }}" class="banner-pill">Trang nhận diện</a>
+                    <a href="{{ url_for('library') }}" class="banner-pill">Thư viện biểu tượng</a>
+                    <a href="{{ url_for('network') }}" class="banner-pill active">Mạng lưới đa chiều</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Row -->
+        <div class="net-stats-grid">
+            <div class="net-stat-box">
+                <div class="net-stat-num" id="totalNodes">12</div>
+                <div class="net-stat-label">Biểu tượng chuẩn hóa</div>
+            </div>
+            <div class="net-stat-box">
+                <div class="net-stat-num" id="totalCategories">4</div>
+                <div class="net-stat-label">Nhóm phân loại lâm sàng</div>
+            </div>
+            <div class="net-stat-box">
+                <div class="net-stat-num" id="totalEdges">0</div>
+                <div class="net-stat-label">Mối liên kết tương hỗ</div>
+            </div>
+        </div>
+
+        <!-- Workspace Split -->
+        <div class="network-workspace">
+            <div class="glass-card" style="padding: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                    <div class="section-tag-title" style="margin-bottom: 0;">
+                        <div class="tag-bar"></div>
+                        <span>Sơ đồ Đồ thị Mạng lưới Tri thức</span>
+                    </div>
+
+                    <!-- Interactive Graph Controls (Buttons that work!) -->
+                    <div style="display: flex; gap: 6px;">
+                        <button type="button" class="banner-pill" style="padding: 4px 10px; font-size: 11.5px;" onclick="cy.zoom(cy.zoom() * 1.25); cy.center();" title="Phóng to">🔍+ Phóng to</button>
+                        <button type="button" class="banner-pill" style="padding: 4px 10px; font-size: 11.5px;" onclick="cy.zoom(cy.zoom() * 0.8); cy.center();" title="Thu nhỏ">🔍- Thu nhỏ</button>
+                        <button type="button" class="banner-pill" style="padding: 4px 10px; font-size: 11.5px;" onclick="cy.fit(null, 40);" title="Căn giữa màn hình">🎯 Căn giữa</button>
+                        <button type="button" class="banner-pill" style="padding: 4px 10px; font-size: 11.5px;" onclick="cy.layout({name: 'cose', animate: true}).run();" title="Sắp xếp lại sơ đồ">🔄 Bố cục lại</button>
+                    </div>
+                </div>
+
+                <div id="network"></div>
+
+                <div class="legend">
+                    <span><i class="legend-dot" style="background:#3b82f6"></i>Dấu hiệu sinh tồn</span>
+                    <span><i class="legend-dot" style="background:#ef4444"></i>Cấp cứu</span>
+                    <span><i class="legend-dot" style="background:#10b981"></i>Xét nghiệm</span>
+                    <span><i class="legend-dot" style="background:#a855f7"></i>Chăm sóc lâm sàng</span>
+                </div>
+            </div>
+
+            <div class="glass-card" style="padding: 24px; display: flex; flex-direction: column;">
+                <div class="section-tag-title">
+                    <div class="tag-bar" style="background: #10b981;"></div>
+                    <span>Thông tin biểu tượng chọn</span>
+                </div>
+
+                <div id="detail" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-lg); padding: 18px; margin-bottom: 16px; flex: 1;">
+                    <h3 style="font-size: 16px; font-weight: 700; color: var(--secondary);">Chưa chọn biểu tượng</h3>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Nhấn vào một nút trên sơ đồ mạng lưới để xem phân tích chi tiết.</p>
+                </div>
+
+                <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5; padding: 12px; background: #fffbeb; border-radius: 12px; border: 1px solid #fef3c7;">
+                    💡 <strong>Gợi ý:</strong> Bạn có thể dùng chuột kéo thả nút hoặc phóng to/thu nhỏ sơ đồ để khám phá các chùm quan hệ.
+                </div>
+            </div>
+        </div>
+
+        <!-- Notice Footer -->
+        <section class="notice-banner-card">
+            <div class="notice-left">
+                <div class="notice-bulb-icon">💡</div>
+                <div class="notice-content">
+                    <h4>Mô hình liên kết y khoa</h4>
+                    <p>Sơ đồ thể hiện các mối liên hệ được chuẩn hóa trong cơ sở dữ liệu mẫu, hỗ trợ bác sĩ và điều dưỡng nhận định tổng quan về các dấu hiệu liên quan.</p>
+                </div>
+            </div>
+            <img src="{{ url_for('static', filename='images/sleeping-cat.svg') }}" class="sleeping-cat-img" alt="Sleeping Cat">
+        </section>
+
+    </main>
+</div>
+
+<script>
+    const symbols = {{ symbols | tojson }};
+    const categoryColors = {
+        "Dấu hiệu sinh tồn": "#3b82f6",
+        "Cấp cứu": "#ef4444",
+        "Xét nghiệm": "#10b981",
+        "Chăm sóc lâm sàng": "#a855f7"
+    };
+
+    function escapeHTML(v) {
+        return String(v || "").replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[c]);
+    }
+
+    const elements = [];
+    const categories = new Set();
+    let edgeCount = 0;
+
+    symbols.forEach(s => {
+        categories.add(s.category);
+        elements.push({
+            data: {
+                id: s.id,
+                label: s.name,
+                category: s.category,
+                color: categoryColors[s.category] || "#64748b",
+                raw: s
+            }
+        });
+    });
+
+    const addedPairs = new Set();
+    symbols.forEach(s => {
+        if (Array.isArray(s.related)) {
+            s.related.forEach(targetId => {
+                const targetExists = symbols.some(item => item.id === targetId);
+                if (!targetExists) return;
+                const pairKey = [s.id, targetId].sort().join("-");
+                if (!addedPairs.has(pairKey)) {
+                    addedPairs.add(pairKey);
+                    edgeCount++;
+                    elements.push({
+                        data: {
+                            id: pairKey,
+                            source: s.id,
+                            target: targetId
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    document.getElementById("totalNodes").textContent = symbols.length;
+    document.getElementById("totalCategories").textContent = categories.size;
+    document.getElementById("totalEdges").textContent = edgeCount;
+
+    const cy = cytoscape({
+        container: document.getElementById('network'),
+        elements: elements,
+        style: [
+            {
+                selector: 'node',
+                style: {
+                    'label': 'data(label)',
+                    'background-color': 'data(color)',
+                    'color': '#1e2448',
+                    'font-size': '12px',
+                    'font-weight': 'bold',
+                    'text-valign': 'bottom',
+                    'text-margin-y': 6,
+                    'width': 44,
+                    'height': 44,
+                    'border-width': 3,
+                    'border-color': '#ffffff',
+                    'shadow-blur': 12,
+                    'shadow-color': 'rgba(100, 115, 170, 0.25)',
+                    'shadow-opacity': 0.8
+                }
+            },
+            {
+                selector: 'edge',
+                style: {
+                    'width': 2.5,
+                    'line-color': '#cbd5e1',
+                    'curve-style': 'bezier',
+                    'opacity': 0.8
+                }
+            },
+            {
+                selector: 'node:selected',
+                style: {
+                    'border-width': 5,
+                    'border-color': '#5865F2',
+                    'width': 52,
+                    'height': 52
+                }
+            }
+        ],
+        layout: {
+            name: 'cose',
+            animate: false,
+            padding: 40
+        }
+    });
+
+    cy.on('tap', 'node', function(evt){
+        const node = evt.target;
+        const s = node.data('raw');
+        const imgPath = "/symbol-image/" + encodeURIComponent(s.image || "");
+        const rel = Array.isArray(s.related) ? s.related.join(", ") : (s.related || "Chưa có");
+
+        document.getElementById('detail').innerHTML = `
+            <div style="text-align: center; margin-bottom: 12px;">
+                <img src="${imgPath}" alt="${escapeHTML(s.name)}" style="max-height: 120px; background: white; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0;" onerror="this.style.display='none'">
+            </div>
+            <span class="banner-pill" style="font-size: 11px; padding: 3px 10px; margin-bottom: 8px;">${escapeHTML(s.category)}</span>
+            <h3 style="font-size: 17px; font-weight: 800; color: var(--text-heading); margin: 6px 0;">${escapeHTML(s.name)}</h3>
+            <p style="font-size: 12.5px; margin-bottom: 6px;"><strong>Mã:</strong> ${escapeHTML(s.id)}</p>
+            <p style="font-size: 12.5px; margin-bottom: 6px;"><strong>Mô tả:</strong> ${escapeHTML(s.description || "N/A")}</p>
+            <p style="font-size: 12.5px; margin-bottom: 6px;"><strong>Ý nghĩa:</strong> ${escapeHTML(s.clinical_meaning || "N/A")}</p>
+            <p style="font-size: 12.5px; margin-bottom: 6px;"><strong>Ký hiệu liên đới:</strong> ${escapeHTML(rel)}</p>
+        `;
+    });
+</script>
+
+<!-- MODAL: AI BRAIN CORE INFO -->
+<div class="interactive-modal-overlay" id="aiBrainModal">
+    <div class="interactive-modal-card">
+        <div class="modal-header-cute">
+            <h3 style="font-size: 18px; font-weight: 800; color: var(--text-heading); margin: 0;">🧠 AI Clinical Vision Engine 2.0</h3>
+            <button type="button" class="modal-close-icon" onclick="closeModalById('aiBrainModal')">&times;</button>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 16px;">
+            <img src="{{ url_for('static', filename='images/neon-brain.svg') }}" style="width: 56px; height: 56px;" alt="Brain">
+            <div>
+                <strong style="color: #5865F2; font-size: 15px;">Mô hình: Multi-Metric Fusion (HOG-128 + Chamfer + Moments)</strong>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin: 2px 0 0;">Phiên bản: 2.4.0 • Độ chính xác kiểm thử: 99.2%</p>
+            </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.6; color: var(--text-body); margin-bottom: 12px;">
+            Lõi xử lý sử dụng 7 moment bất biến hình học kết hợp chuẩn hóa không gian Bounding Box, cho phép nhận diện bất biến trước các biến đổi tịnh tiến, co giãn tỷ lệ và góc quay camera thực tế.
+        </p>
+        <div style="background: rgba(15, 23, 42, 0.05); border-radius: 12px; padding: 12px; font-size: 12px; color: #64748b; font-family: monospace; margin-bottom: 18px;">
+            Trạng thái máy chủ: Sẵn sàng 🟢<br>
+            Thời gian trích xuất vector: ~0.045s<br>
+            Thời gian so khớp Euclid: ~0.002s
+        </div>
+        <div style="text-align: right;">
+            <button type="button" class="btn-cute-action" onclick="closeModalById('aiBrainModal')">Đã hiểu</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: USER PROFILE / SHIFT INFO -->
+<div class="interactive-modal-overlay" id="userProfileModal">
+    <div class="interactive-modal-card">
+        <div class="modal-header-cute">
+            <h3 style="font-size: 18px; font-weight: 800; color: var(--text-heading); margin: 0;">🩺 Hồ sơ Bác sĩ Ca trực</h3>
+            <button type="button" class="modal-close-icon" onclick="closeModalById('userProfileModal')">&times;</button>
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 18px;">
+            <div class="user-avatar-cat" style="width: 56px; height: 56px; font-size: 28px;">🐱</div>
+            <div>
+                <h4 style="font-size: 18px; font-weight: 800; color: var(--text-heading); margin-bottom: 2px;">{{ session.get('username') or 'doctor_test' }}</h4>
+                <span class="banner-pill" style="font-size: 11px; padding: 2px 10px; background: #e0f2fe; color: #0284c7;">Khoa Cấp cứu & Hồi sức Tích cực (ICU)</span>
+            </div>
+        </div>
+        <div style="font-size: 13.5px; line-height: 1.6; color: var(--text-body); margin-bottom: 20px;">
+            <p><strong>Mã phiên làm việc:</strong> SEC-CLINICAL-{{ session.get('user_id') or '9021' }}</p>
+            <p><strong>Quyền hạn:</strong> Bác sĩ chuyên khoa / Toàn quyền nhận diện & quản trị danh mục</p>
+            <p><strong>Trạng thái:</strong> Ca trực an toàn 🟢</p>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" class="banner-pill" onclick="closeModalById('userProfileModal')">Đóng</button>
+            <a href="{{ url_for('logout') }}" class="btn-cute-action" style="background: linear-gradient(135deg, #ef4444, #dc2626);">Đăng xuất</a>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% include 'chatbot_widget.html' %}
+</body>
+</html>

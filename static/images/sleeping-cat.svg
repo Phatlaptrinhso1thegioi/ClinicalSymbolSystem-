@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110" fill="none">
+  <!-- Zzz floating -->
+  <text x="110" y="28" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" font-weight="800" fill="#a855f7" opacity="0.8">Z</text>
+  <text x="124" y="20" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="800" fill="#c084fc" opacity="0.7">z</text>
+  <text x="135" y="12" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="800" fill="#e9d5ff" opacity="0.6">z</text>
+
+  <!-- Sparkles -->
+  <path d="M15 45 L17 49 L21 51 L17 53 L15 57 L13 53 L9 51 L13 49 Z" fill="#fbbf24" opacity="0.9"/>
+  <circle cx="28" cy="35" r="2" fill="#38bdf8"/>
+
+  <!-- Curled Body -->
+  <ellipse cx="80" cy="72" rx="46" ry="28" fill="#ffffff" stroke="#cbd5e1" stroke-width="2.5"/>
+
+  <!-- Tail wrapped around -->
+  <path d="M120 75 C135 75 135 95 110 95 C95 95 90 92 80 92" fill="#ffffff" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Sleeping Cat Head -->
+  <ellipse cx="50" cy="62" rx="30" ry="25" fill="#ffffff" stroke="#cbd5e1" stroke-width="2.5"/>
+
+  <!-- Ears -->
+  <path d="M30 48 L22 25 Q32 26 42 38 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2.5"/>
+  <path d="M28 32 L35 38 L28 42 Z" fill="#fbcfe8"/>
+
+  <path d="M60 42 L68 22 Q75 28 72 45 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2.5"/>
+  <path d="M66 28 L70 38 L63 36 Z" fill="#fbcfe8"/>
+
+  <!-- Sleeping Closed Eyes -->
+  <path d="M36 62 Q42 67 48 62" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round"/>
+  <path d="M54 62 Q60 67 66 62" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Cute Nose & Mouth -->
+  <polygon points="50,66 48,64 52,64" fill="#f472b6"/>
+  <path d="M47 68 Q50 70 53 68" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Rosy Cheeks -->
+  <ellipse cx="34" cy="67" rx="5" ry="3" fill="#fbcfe8"/>
+  <ellipse cx="64" cy="67" rx="5" ry="3" fill="#fbcfe8"/>
+
+  <!-- Front Paws tucked in -->
+  <ellipse cx="44" cy="84" rx="8" ry="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+</svg>

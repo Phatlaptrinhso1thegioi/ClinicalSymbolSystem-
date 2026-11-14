@@ -1,0 +1,29 @@
+# Python virtual environments
+.venv/
+.venv_windows/
+env/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Vercel & IDE
+.vercel/
+.idea/
+.vscode/
+
+# Environment secrets
+.env
+.env.local
+
+# Large temporary uploads (keep directory with .gitkeep)
+static/uploads/*
+!static/uploads/.gitkeep

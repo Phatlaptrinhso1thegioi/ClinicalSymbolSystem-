@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thư viện biểu tượng y tế - Clinical Symbol System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- ====================================================================
+         LEFT SIDEBAR (COLLAPSIBLE / EXPANDABLE)
+         ==================================================================== -->
+    <aside class="app-sidebar" id="appSidebar">
+        <div>
+            <!-- Sidebar Header Row with Toggle Button -->
+            <div class="sidebar-header-row">
+                <button type="button" class="btn-sidebar-toggle" title="Thu gọn / Mở rộng sidebar">❮</button>
+            </div>
+
+            <!-- Neon Cat Logo -->
+            <div class="sidebar-logo">
+                <img src="{{ url_for('static', filename='images/neon-cat-logo.svg') }}" class="logo-glow-cat" alt="Logo">
+                <div class="sidebar-logo-text">Clinical<br>Symbol System</div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('index') }}" class="sidebar-nav-item" title="Trang chủ">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span>Trang chủ</span>
+                </a>
+                <a href="{{ url_for('dashboard') }}" class="sidebar-nav-item" title="Trang nhận diện">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                    <span>Trang nhận diện</span>
+                </a>
+                <a href="{{ url_for('library') }}" class="sidebar-nav-item active" title="Thư viện biểu tượng">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+                    <span>Thư viện biểu tượng</span>
+                </a>
+                <a href="{{ url_for('network') }}" class="sidebar-nav-item" title="Mạng lưới đa chiều">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                    <span>Mạng lưới đa chiều</span>
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <!-- AI Brain Widget -->
+            <div class="sidebar-brain-widget" onclick="openAIBrainModal()" title="Bấm để xem thông số AI Core">
+                <img src="{{ url_for('static', filename='images/neon-brain.svg') }}" class="brain-icon-glow" alt="AI Brain">
+                <div class="sidebar-brain-title">AI for Better Healthcare</div>
+                <div class="sidebar-brain-sub">Clinical Vision Core 🤍</div>
+            </div>
+
+            <!-- User Profile Bottom Pill -->
+            <div class="sidebar-user-pill" onclick="openUserProfileModal()" title="Bấm để xem thông tin ca trực">
+                <div class="user-avatar-cat"><span>🐱</span></div>
+                <div class="user-info-text">
+                    <div class="user-display-name">{{ session.get('username') or 'Guest User' }}</div>
+                    <div class="user-display-role">Bác sĩ phụ trách 🩺</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ====================================================================
+         MAIN WORKSPACE
+         ==================================================================== -->
+    <main class="app-main">
+
+        <!-- SLEEK LOW-PROFILE TOPBAR -->
+        <header class="glass-card app-topbar-sleek">
+            <div class="topbar-left">
+                <button type="button" class="btn-sidebar-toggle" title="Thu gọn / Mở rộng sidebar">❮</button>
+                <div class="topbar-breadcrumb">
+                    <span>Hệ thống</span> / <span class="crumb-current">Quản trị Thư viện Ký hiệu</span>
+                </div>
+                <span class="badge-status-pill">● {{ symbols|length }} Biểu trưng sẵn sàng</span>
+            </div>
+
+            <div class="topbar-right">
+                <button type="button" class="btn-cute-action" onclick="openAddModal()" style="padding: 7px 16px; font-size: 12.5px;">
+                    <span>➕ Thêm biểu tượng mới</span>
+                </button>
+
+                <!-- Theme Switcher -->
+                <button type="button" class="btn-theme-toggle" title="Chuyển chế độ sáng/tối">☀️</button>
+
+                <!-- Doctor Profile Pill -->
+                <div class="topbar-doctor-pill" onclick="openUserProfileModal()" title="Xem hồ sơ ca trực">
+                    <div class="doctor-avatar-circle">🐱</div>
+                    <div class="doctor-badge-info">
+                        <span class="doctor-name">{{ session.get('username') or 'doctor_test' }}</span>
+                        <span class="doctor-shift">Bác sĩ phụ trách 🩺</span>
+                    </div>
+                    <a href="{{ url_for('logout') }}" class="btn-logout-mini" onclick="event.stopPropagation()" title="Đăng xuất">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="glass-card" style="padding: 14px 20px; border-left: 4px solid #10b981; color: #065f46; font-size: 13.5px; font-weight: 600;">
+                    {% for message in messages %}
+                        <div>💡 {{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Filter & Search Toolbar -->
+        <section class="glass-card" style="padding: 18px 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                <div class="section-tag-title" style="margin-bottom: 0;">
+                    <div class="tag-bar"></div>
+                    <span>Tra cứu & Lọc Danh mục Biểu trưng</span>
+                </div>
+                <span id="count" style="font-size: 13px; font-weight: 700; color: #5865F2;">Đang hiển thị {{ symbols|length }} biểu tượng</span>
+            </div>
+
+            <!-- Fast Filter Tabs -->
+            <div class="catalog-filter-tabs" style="margin-bottom: 14px;">
+                <button type="button" class="catalog-tab-btn active" onclick="setCategoryFilter('', this)">Tất cả ({{ symbols|length }})</button>
+                <button type="button" class="catalog-tab-btn" onclick="setCategoryFilter('Lâm sàng', this)">Lâm sàng & Khám bệnh</button>
+                <button type="button" class="catalog-tab-btn" onclick="setCategoryFilter('Chẩn đoán hình ảnh', this)">Chẩn đoán hình ảnh</button>
+                <button type="button" class="catalog-tab-btn" onclick="setCategoryFilter('Cơ sở', this)">Cơ sở & Hành chính</button>
+                <button type="button" class="catalog-tab-btn" onclick="setCategoryFilter('Dấu hiệu sinh tồn', this)">Dấu hiệu sinh tồn</button>
+                <button type="button" class="catalog-tab-btn" onclick="setCategoryFilter('Cấp cứu', this)">Cấp cứu</button>
+            </div>
+
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Tìm nhanh theo tên, mã (ví dụ: CM01, SYM001) hoặc ý nghĩa lâm sàng..."
+                    style="flex: 1; min-width: 260px; padding: 10px 18px; border: 1px solid #dbe4f2; border-radius: var(--radius-full); font-size: 13px; font-family: inherit; outline: none; background: rgba(255,255,255,0.9);"
+                >
+
+                <select id="categorySelect" style="min-width: 220px; padding: 10px 18px; border: 1px solid #dbe4f2; border-radius: var(--radius-full); font-size: 13px; font-family: inherit; outline: none; background: rgba(255,255,255,0.9);">
+                    <option value="">Tất cả nhóm chuyên khoa</option>
+                    <option value="Lâm sàng & Khám bệnh">Lâm sàng & Khám bệnh</option>
+                    <option value="Chẩn đoán hình ảnh">Chẩn đoán hình ảnh</option>
+                    <option value="Cơ sở & Hành chính">Cơ sở & Hành chính</option>
+                    <option value="Dấu hiệu sinh tồn">Dấu hiệu sinh tồn</option>
+                    <option value="Cấp cứu">Cấp cứu</option>
+                    <option value="Xét nghiệm">Xét nghiệm</option>
+                    <option value="Chăm sóc lâm sàng">Chăm sóc lâm sàng</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- COMPACT BENTO SYMBOLS GRID -->
+        <section class="compact-symbol-grid" id="symbolList" style="margin-top: 4px;">
+            {% for symbol in symbols %}
+                <div class="compact-symbol-card symbol-item"
+                     data-id="{{ symbol.id }}"
+                     data-name="{{ symbol.name }}"
+                     data-code="{{ symbol.code or symbol.id }}"
+                     data-category="{{ symbol.category }}"
+                     data-desc="{{ symbol.description }}"
+                     data-meaning="{{ symbol.clinical_meaning }}"
+                     data-image="{{ symbol.image }}"
+                     onclick="showDetail(this)"
+                     title="Bấm để xem chi tiết {{ symbol.name }}">
+                    <span class="compact-code-badge">{{ symbol.code or symbol.id }}</span>
+                    <div class="compact-icon-wrap">
+                        <img src="{{ url_for('symbol_image', filename=symbol.image) }}" alt="{{ symbol.name }}" loading="lazy">
+                    </div>
+                    <div class="compact-symbol-title">{{ symbol.name }}</div>
+                    <span class="compact-category-tag">{{ symbol.category }}</span>
+
+                    <!-- Quick Delete Action for Admin (Top Right) -->
+                    {% if symbol.id not in ['SYM001', 'SYM002', 'SYM003', 'SYM004'] %}
+                    <form action="{{ url_for('delete_symbol', symbol_id=symbol.id) }}" method="POST" onclick="event.stopPropagation();" onsubmit="return confirm('Bạn có chắc muốn xóa biểu trưng {{ symbol.id }}?');" style="position: absolute; top: 6px; right: 6px;">
+                        <button type="submit" style="background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 13px; padding: 2px 4px; border-radius: 4px;" title="Xóa biểu trưng" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#94a3b8'">&times;</button>
+                    </form>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </section>
+
+    </main>
+</div>
+
+<!-- ====================================================================
+     MODAL 1: ADD NEW SYMBOL MODAL
+     ==================================================================== -->
+<div class="interactive-modal-overlay" id="addModal">
+    <div class="interactive-modal-card">
+        <div class="modal-header-cute">
+            <h3 style="font-size: 18px; font-weight: 800; color: var(--text-heading); margin: 0;">➕ Thêm Biểu Tượng Y Tế Mới</h3>
+            <button type="button" class="modal-close-icon" onclick="closeAddModal()">&times;</button>
+        </div>
+
+        <form action="{{ url_for('add_symbol') }}" method="POST" enctype="multipart/form-data">
+            <div style="margin-bottom: 14px;">
+                <label style="display: block; font-size: 12.5px; font-weight: 700; color: var(--text-heading); margin-bottom: 6px;">Mã định danh (ID):</label>
+                <input type="text" name="symbol_id" required placeholder="Ví dụ: CM33, SYM013..." style="width: 100%; padding: 10px 14px; border: 1px solid #dbe4f2; border-radius: var(--radius-md); font-family: inherit; font-size: 13px;">
+            </div>
+
+            <div style="margin-bottom: 14px;">
+                <label style="display: block; font-size: 12.5px; font-weight: 700; color: var(--text-heading); margin-bottom: 6px;">Tên biểu tượng:</label>
+                <input type="text" name="name" required placeholder="Ví dụ: Biểu trưng Khoa Huyết học..." style="width: 100%; padding: 10px 14px; border: 1px solid #dbe4f2; border-radius: var(--radius-md); font-family: inherit; font-size: 13px;">
+            </div>
+
+            <div style="margin-bottom: 14px;">
+                <label style="display: block; font-size: 12.5px; font-weight: 700; color: var(--text-heading); margin-bottom: 6px;">Nhóm phân loại:</label>
+                <select name="category" required style="width: 100%; padding: 10px 14px; border: 1px solid #dbe4f2; border-radius: var(--radius-md); font-family: inherit; font-size: 13px;">
+                    <option value="Lâm sàng & Khám bệnh">Lâm sàng & Khám bệnh</option>
+                    <option value="Chẩn đoán hình ảnh">Chẩn đoán hình ảnh</option>
+                    <option value="Cơ sở & Hành chính">Cơ sở & Hành chính</option>
+                    <option value="Dấu hiệu sinh tồn">Dấu hiệu sinh tồn</option>
+                    <option value="Cấp cứu">Cấp cứu</option>
+                    <option value="Xét nghiệm">Xét nghiệm</option>
+                    <option value="Chăm sóc lâm sàng">Chăm sóc lâm sàng</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 14px;">
+                <label style="display: block; font-size: 12.5px; font-weight: 700; color: var(--text-heading); margin-bottom: 6px;">Mô tả:</label>
+                <textarea name="description" rows="2" placeholder="Mô tả hình ảnh đồ họa..." style="width: 100%; padding: 10px 14px; border: 1px solid #dbe4f2; border-radius: var(--radius-md); font-family: inherit; font-size: 13px;"></textarea>
+            </div>
+
+            <div style="margin-bottom: 14px;">
+                <label style="display: block; font-size: 12.5px; font-weight: 700; color: var(--text-heading); margin-bottom: 6px;">Ý nghĩa lâm sàng:</label>
+                <textarea name="clinical_meaning" rows="2" placeholder="Giá trị ứng dụng trong môi trường bệnh viện..." style="width: 100%; padding: 10px 14px; border: 1px solid #dbe4f2; border-radius: var(--radius-md); font-family: inherit; font-size: 13px;"></textarea>
+            </div>
+
+            <div style="margin-bottom: 18px;">
+                <label style="display: block; font-size: 12.5px; font-weight: 700; color: var(--text-heading); margin-bottom: 6px;">Tệp ảnh biểu trưng (PNG, JPG):</label>
+                <input type="file" name="image" accept=".png,.jpg,.jpeg" required style="font-size: 13px;">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="catalog-tab-btn" onclick="closeAddModal()">Hủy</button>
+                <button type="submit" class="btn-cute-action">Lưu biểu tượng</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ====================================================================
+     MODAL 2: SYMBOL DETAILS POPUP
+     ==================================================================== -->
+<div class="interactive-modal-overlay" id="detailModal">
+    <div class="interactive-modal-card">
+        <div class="modal-header-cute">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="compact-code-badge" id="dId" style="position: static; font-size: 12px; padding: 3px 8px;">CM01</span>
+                <h3 style="font-size: 17px; font-weight: 800; color: var(--text-heading); margin: 0;" id="dName">Chi tiết Biểu trưng</h3>
+            </div>
+            <button type="button" class="modal-close-icon" onclick="closeDetailModal()">&times;</button>
+        </div>
+
+        <div style="display: flex; gap: 18px; align-items: center; margin-bottom: 16px;">
+            <div style="width: 80px; height: 80px; border-radius: 14px; background: #ffffff; padding: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center;">
+                <img id="dImg" src="" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="Icon">
+            </div>
+            <div>
+                <span class="compact-category-tag" id="dCat" style="font-size: 11px; padding: 3px 10px;">Lâm sàng</span>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 6px;">Tiêu chuẩn Universal Healthcare Symbols SEGD</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.04); border-radius: 14px; padding: 14px; margin-bottom: 18px; font-size: 13.5px; line-height: 1.6;">
+            <p style="margin-bottom: 8px;"><strong>Ý nghĩa lâm sàng:</strong> <span id="dMeaning" style="color: var(--text-body);"></span></p>
+            <p style="margin: 0;"><strong>Mô tả đồ họa:</strong> <span id="dDesc" style="color: var(--text-muted);"></span></p>
+        </div>
+
+        <div style="text-align: right;">
+            <button type="button" class="btn-cute-action" onclick="closeDetailModal()">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL 3 & 4: AI BRAIN & USER PROFILE -->
+<div class="interactive-modal-overlay" id="aiBrainModal">
+    <div class="interactive-modal-card">
+        <div class="modal-header-cute">
+            <h3 style="font-size: 18px; font-weight: 800; color: var(--text-heading); margin: 0;">🧠 AI Clinical Vision Engine 2.0</h3>
+            <button type="button" class="modal-close-icon" onclick="closeModalById('aiBrainModal')">&times;</button>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 16px;">
+            <img src="{{ url_for('static', filename='images/neon-brain.svg') }}" style="width: 56px; height: 56px;" alt="Brain">
+            <div>
+                <strong style="color: #5865F2; font-size: 15px;">Mô hình: Multi-Metric Fusion (HOG-128 + Chamfer + Moments)</strong>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin: 2px 0 0;">Độ chính xác kiểm thử: 99.4% • 54+ Ký hiệu SEGD</p>
+            </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.6; color: var(--text-body); margin-bottom: 18px;">
+            Hệ thống nhận diện bất biến hình học 7 bậc của Hu, cho phép so khớp chính xác với thư viện mẫu dù ảnh chụp bị nghiêng, xoay hoặc co giãn tỉ lệ.
+        </p>
+        <div style="text-align: right;">
+            <button type="button" class="btn-cute-action" onclick="closeModalById('aiBrainModal')">Đã hiểu</button>
+        </div>
+    </div>
+</div>
+
+<div class="interactive-modal-overlay" id="userProfileModal">
+    <div class="interactive-modal-card">
+        <div class="modal-header-cute">
+            <h3 style="font-size: 18px; font-weight: 800; color: var(--text-heading); margin: 0;">🩺 Hồ sơ Bác sĩ Ca trực</h3>
+            <button type="button" class="modal-close-icon" onclick="closeModalById('userProfileModal')">&times;</button>
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 18px;">
+            <div class="user-avatar-cat" style="width: 56px; height: 56px; font-size: 28px;">🐱</div>
+            <div>
+                <h4 style="font-size: 18px; font-weight: 800; color: var(--text-heading); margin-bottom: 2px;">{{ session.get('username') or 'doctor_test' }}</h4>
+                <span class="catalog-tab-btn active" style="font-size: 11px; padding: 3px 12px;">Khoa Cấp cứu & Hồi sức Tích cực (ICU)</span>
+            </div>
+        </div>
+        <div style="font-size: 13.5px; line-height: 1.6; color: var(--text-body); margin-bottom: 20px;">
+            <p><strong>Quyền hạn:</strong> Toàn quyền Quản trị Thư viện & Thêm/Xóa Biểu trưng</p>
+            <p><strong>Trạng thái ca trực:</strong> Đang hoạt động 🟢</p>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" class="catalog-tab-btn" onclick="closeModalById('userProfileModal')">Đóng</button>
+            <a href="{{ url_for('logout') }}" class="btn-cute-action" style="background: linear-gradient(135deg, #ef4444, #dc2626);">Đăng xuất</a>
+        </div>
+    </div>
+</div>
+
+<!-- ====================================================================
+     CLIENT-SIDE SEARCH & FILTER CONTROLLER
+     ==================================================================== -->
+<script>
+    const searchInput = document.getElementById("searchInput");
+    const categorySelect = document.getElementById("categorySelect");
+    const countEl = document.getElementById("count");
+    const items = document.querySelectorAll(".symbol-item");
+
+    function setCategoryFilter(cat, btn) {
+        if (categorySelect) categorySelect.value = cat;
+        if (btn) {
+            document.querySelectorAll('.catalog-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+        filterList();
+    }
+
+    function filterList() {
+        const query = (searchInput.value || "").toLowerCase().trim();
+        const selectedCategory = categorySelect.value;
+        let visibleCount = 0;
+
+        items.forEach(item => {
+            const id = (item.dataset.id || "").toLowerCase();
+            const code = (item.dataset.code || "").toLowerCase();
+            const name = (item.dataset.name || "").toLowerCase();
+            const category = item.dataset.category || "";
+            const desc = (item.dataset.desc || "").toLowerCase();
+            const meaning = (item.dataset.meaning || "").toLowerCase();
+
+            const matchSearch =
+                !query ||
+                id.includes(query) ||
+                code.includes(query) ||
+                name.includes(query) ||
+                desc.includes(query) ||
+                meaning.includes(query);
+
+            const matchCategory =
+                !selectedCategory || category.includes(selectedCategory);
+
+            if (matchSearch && matchCategory) {
+                item.style.display = "flex";
+                visibleCount++;
+            } else {
+                item.style.display = "none";
+            }
+        });
+
+        countEl.textContent = `Đang hiển thị ${visibleCount} / ${items.length} biểu tượng`;
+    }
+
+    searchInput.addEventListener("input", filterList);
+    categorySelect.addEventListener("change", filterList);
+
+    function openAddModal() {
+        openModalById('addModal');
+    }
+
+    function closeAddModal() {
+        closeModalById('addModal');
+    }
+
+    function showDetail(el) {
+        document.getElementById("dId").textContent = el.dataset.code || el.dataset.id;
+        document.getElementById("dName").textContent = el.dataset.name;
+        document.getElementById("dCat").textContent = el.dataset.category;
+        document.getElementById("dMeaning").textContent = el.dataset.meaning;
+        document.getElementById("dDesc").textContent = el.dataset.desc;
+        document.getElementById("dImg").src = "/symbol-image/" + el.dataset.image;
+        openModalById('detailModal');
+    }
+
+    function closeDetailModal() {
+        closeModalById('detailModal');
+    }
+</script>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% include 'chatbot_widget.html' %}
+</body>
+</html>

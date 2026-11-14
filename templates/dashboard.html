@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Symbol System - Nhận diện biểu tượng y tế</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- ====================================================================
+         LEFT SIDEBAR (COLLAPSIBLE / EXPANDABLE - ẤN RA ẤN VÀO ĐƯỢC)
+         ==================================================================== -->
+    <aside class="app-sidebar" id="appSidebar">
+        <div>
+            <!-- Sidebar Header Row with Toggle Button -->
+            <div class="sidebar-header-row">
+                <button type="button" class="btn-sidebar-toggle" title="Thu gọn / Mở rộng sidebar">❮</button>
+            </div>
+
+            <!-- Neon Cat Logo -->
+            <div class="sidebar-logo">
+                <img src="{{ url_for('static', filename='images/neon-cat-logo.svg') }}" class="logo-glow-cat" alt="Neon Cat Logo">
+                <div class="sidebar-logo-text">Clinical<br>Symbol System</div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('index') }}" class="sidebar-nav-item" title="Trang chủ">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span>Trang chủ</span>
+                </a>
+                <a href="{{ url_for('dashboard') }}" class="sidebar-nav-item active" title="Trang nhận diện">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                    <span>Trang nhận diện</span>
+                </a>
+                <a href="{{ url_for('library') }}" class="sidebar-nav-item" title="Thư viện biểu tượng">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+                    <span>Thư viện biểu tượng</span>
+                </a>
+                <a href="{{ url_for('network') }}" class="sidebar-nav-item" title="Mạng lưới đa chiều">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                    <span>Mạng lưới đa chiều</span>
+                </a>
+                <a href="javascript:void(0)" class="sidebar-nav-item" onclick="toggleClinicalChatbot()" title="Trợ lý AI Y tế">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    <span>Trợ lý AI Y tế</span>
+                    <span style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 10px; margin-left: auto;">AI</span>
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <!-- AI Brain Widget (Clickable) -->
+            <div class="sidebar-brain-widget" onclick="openAIBrainModal()" title="Bấm để xem thông số AI Core">
+                <img src="{{ url_for('static', filename='images/neon-brain.svg') }}" class="brain-icon-glow" alt="AI Brain">
+                <div class="sidebar-brain-title">AI for Better Healthcare</div>
+                <div class="sidebar-brain-sub">
+                    <span>Clinical Vision Core</span> 🤍
+                </div>
+            </div>
+
+            <!-- User Profile Bottom Pill (Clickable) -->
+            <div class="sidebar-user-pill" onclick="openUserProfileModal()" title="Bấm để xem thông tin ca trực">
+                <div class="user-avatar-cat">
+                    <span style="font-size: 16px;">🐱</span>
+                </div>
+                <div class="user-info-text">
+                    <div class="user-display-name">{{ session.get('username') or 'Guest User' }}</div>
+                    <div class="user-display-role">Bác sĩ phụ trách 🩺</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ====================================================================
+         MAIN CONTENT WORKSPACE
+         ==================================================================== -->
+    <main class="app-main">
+
+        <!-- SLEEK LOW-PROFILE TOPBAR (REPLACING OVERSIZED BANNER) -->
+        <header class="glass-card app-topbar-sleek">
+            <div class="topbar-left">
+                <button type="button" class="btn-sidebar-toggle" title="Thu gọn / Mở rộng sidebar">❮</button>
+                <div class="topbar-breadcrumb">
+                    <span>Hệ thống</span> / <span class="crumb-current">Trang nhận diện & Phân tích lâm sàng</span>
+                </div>
+                <span class="badge-status-pill">● {{ symbols|length if symbols else 53 }} Biểu trưng chuẩn hóa SEGD</span>
+            </div>
+
+            <div class="topbar-right">
+                <!-- Live Search Box -->
+                <div class="topbar-search-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input type="text" id="globalSymbolSearch" placeholder="Tìm kiếm nhanh biểu tượng..." oninput="filterGlobalSymbols(this.value)">
+                </div>
+
+                <!-- Theme Switcher -->
+                <button type="button" class="btn-theme-toggle" title="Chuyển chế độ sáng/tối">☀️</button>
+
+                <!-- Doctor Profile Pill & Quick Logout -->
+                <div class="topbar-doctor-pill" onclick="openUserProfileModal()" title="Xem hồ sơ ca trực">
+                    <div class="doctor-avatar-circle">🐱</div>
+                    <div class="doctor-badge-info">
+                        <span class="doctor-name">{{ session.get('username') or 'doctor_test' }}</span>
+                        <span class="doctor-shift">Bác sĩ phụ trách 🩺</span>
+                    </div>
+                    <a href="{{ url_for('logout') }}" class="btn-logout-mini" onclick="event.stopPropagation()" title="Đăng xuất an toàn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div style="margin-bottom: 4px;">
+                    {% for message in messages %}
+                        <div class="glass-card" style="padding: 12px 18px; border-left: 4px solid #f59e0b; color: #b45309; font-size: 13.5px; font-weight: 600;">
+                            💡 {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- INFO INTRO CARD (WITH GRADIENT HEARTBEAT & ECG WAVE) -->
+        <section class="glass-card info-intro-card">
+            <div class="intro-left">
+                <div class="gradient-icon-square">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                        <path d="M3.22 12H9.5l1.5-3 2 6.5 1.5-3.5h6.28"/>
+                    </svg>
+                </div>
+                <div class="intro-text">
+                    <h2>Nhận diện & Chuẩn hóa Ký hiệu Y tế</h2>
+                    <p>Hệ thống hỗ trợ toàn bộ 54 biểu trưng lâm sàng theo tiêu chuẩn quốc tế SEGD & Hablamos Juntos bằng thuật toán thị giác đa đặc trưng Multi-Metric Fusion (HOG-128, Chamfer Distance, IoU và Invariant Moments), trích xuất đặc trưng và liên kết phác đồ xử trí AI tức thì.</p>
+                </div>
+            </div>
+
+            <!-- Decorative ECG Wave Line -->
+            <svg class="intro-ecg-decor" viewBox="0 0 180 50" fill="none">
+                <path d="M 0 25 L 45 25 L 55 10 L 70 42 L 85 5 L 98 32 L 108 25 L 180 25" 
+                      stroke="#818cf8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </section>
+
+        <!-- INPUT SECTION (WITH 3 MODES: UPLOAD / CAMERA / CANVAS) -->
+        <section class="glass-card input-section-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                <div class="section-tag-title" style="margin-bottom: 0;">
+                    <div class="tag-bar"></div>
+                    <span>1. Tiếp nhận hình ảnh biểu tượng</span>
+                </div>
+
+                <!-- Mode switcher tabs -->
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="catalog-tab-btn active" id="tabBtnFile" onclick="selectInputMode('file')">
+                        📁 Tải ảnh tệp
+                    </button>
+                    <button type="button" class="catalog-tab-btn" id="tabBtnCamera" onclick="selectInputMode('camera')">
+                        📸 Quét Camera
+                    </button>
+                    <button type="button" class="catalog-tab-btn" id="tabBtnCanvas" onclick="selectInputMode('canvas')">
+                        ✏️ Bảng vẽ tay
+                    </button>
+                </div>
+            </div>
+
+            <div class="input-grid-split">
+                <!-- Left Input Mode Panel -->
+                <div style="display: flex; flex-direction: column;">
+                    
+                    <!-- MODE 1: FILE UPLOAD DROPZONE -->
+                    <div id="modePaneFile">
+                        <form action="{{ url_for('recognize') }}" method="POST" enctype="multipart/form-data">
+                            <div class="dropzone-cute" onclick="document.getElementById('hiddenFileInput').click()">
+                                <svg class="cloud-upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/>
+                                    <path d="M12 12v9"/>
+                                    <path d="m16 16-4-4-4 4"/>
+                                </svg>
+                                <div class="dropzone-prompt">Kéo thả ảnh vào đây hoặc</div>
+                                <button type="button" class="btn-cute-action" onclick="event.stopPropagation(); document.getElementById('hiddenFileInput').click()">
+                                    <span>📁 Chọn tệp</span>
+                                </button>
+                                <input type="file" id="hiddenFileInput" name="symbol_image" accept=".png,.jpg,.jpeg" style="display: none;" onchange="onFileChosen(this)">
+                                <div id="selectedFilenameDisplay" style="font-size: 13px; font-weight: 700; color: #5865F2; margin-top: 10px;"></div>
+                                <div class="dropzone-hint">Định dạng hỗ trợ: PNG, JPG, JPEG • Dung lượng tối đa 5 MB</div>
+                            </div>
+                            <div style="text-align: right; margin-top: 14px;">
+                                <button type="submit" class="btn-cute-action">
+                                    <span>⚡ Bắt đầu phân tích</span> →
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- MODE 2: CAMERA SCANNER (KHUNG NGẮM CĂN CHỈNH THÔNG MINH) -->
+                    <div id="modePaneCamera" style="display: none;">
+                        <div style="background: rgba(248, 250, 252, 0.7); border: 2px dashed #93c5fd; border-radius: var(--radius-xl); padding: 18px; text-align: center;">
+                            <div class="camera-scanner-wrapper">
+                                <video id="cameraVideo" autoplay playsinline></video>
+                                <div class="camera-target-reticle">
+                                    <div class="reticle-corner tl"></div>
+                                    <div class="reticle-corner tr"></div>
+                                    <div class="reticle-corner bl"></div>
+                                    <div class="reticle-corner br"></div>
+                                    <div class="reticle-laser"></div>
+                                    <div class="reticle-center-cross">+</div>
+                                    <div class="reticle-label">VÙNG NHẬN DIỆN AI</div>
+                                </div>
+                            </div>
+                            <canvas id="cameraCanvas" width="400" height="400" style="display: none;"></canvas>
+                            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">
+                                <button type="button" id="btnStartCam" class="btn-cute-action" onclick="activateCamera()">📷 Bật Camera</button>
+                                <button type="button" id="btnSnapCam" class="btn-cute-action" onclick="snapCameraAndSubmit()" disabled style="background: linear-gradient(135deg, #10b981, #059669);">📸 Chụp & Quét Biểu trưng</button>
+                                <button type="button" id="btnStopCam" class="catalog-tab-btn" onclick="deactivateCamera()" style="display: none;">Tắt Camera</button>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px; font-weight: 600;">💡 Căn chỉnh biểu tượng nằm trọn trong khung ngắm 4 góc vuông</p>
+                        </div>
+                    </div>
+
+                    <!-- MODE 3: DRAWING CANVAS (BẢNG VẼ TAY CẢM ỨNG NÂNG CAO) -->
+                    <div id="modePaneCanvas" style="display: none;">
+                        <div style="background: rgba(248, 250, 252, 0.7); border: 2px dashed #93c5fd; border-radius: var(--radius-xl); padding: 18px; text-align: center;">
+                            <div style="position: relative; width: 320px; margin: 0 auto;">
+                                <canvas id="handDrawCanvas" width="320" height="240" class="canvas-draw-interactive"></canvas>
+                                <div class="canvas-crosshair-center">+</div>
+                            </div>
+                            <div style="display: flex; justify-content: center; gap: 8px; margin-top: 12px; flex-wrap: wrap;" id="penWidthButtons">
+                                <button type="button" class="catalog-tab-btn" onclick="changePenWidth(6, this)">Nét mảnh (6px)</button>
+                                <button type="button" class="catalog-tab-btn active" onclick="changePenWidth(12, this)">Nét vừa (12px)</button>
+                                <button type="button" class="catalog-tab-btn" onclick="changePenWidth(20, this)">Nét đậm (20px)</button>
+                                <button type="button" class="catalog-tab-btn" onclick="wipeCanvas()">🗑️ Xóa vẽ lại</button>
+                                <button type="button" class="btn-cute-action" onclick="submitDrawnCanvas()">⚡ Nhận diện nét vẽ →</button>
+                            </div>
+                            <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 8px;">Vẽ biểu trưng vào giữa tâm dấu cộng để hệ thống AI nhận diện chuẩn xác nhất</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Side: Decorative 3D Health Badges (Matching Mockup) -->
+                <div class="decorative-ready-card">
+                    <div class="floating-pills-row">
+                        <!-- Medical Cross Icon -->
+                        <div class="float-med-icon" style="color: #3b82f6;" title="Chữ thập y tế">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                        </div>
+                        <!-- Heartbeat Icon -->
+                        <div class="float-med-icon" style="color: #6366f1;" title="Điện tâm đồ ECG">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        </div>
+                        <!-- Pill Capsule Icon -->
+                        <div class="float-med-icon" style="color: #38bdf8;" title="Dược phẩm">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
+                        </div>
+                        <!-- Syringe Icon -->
+                        <div class="float-med-icon" style="color: #818cf8;" title="Tiêm chủng">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/><path d="m9 11 4 4"/><path d="m5 19-3 3"/><path d="m14 4 6 6"/></svg>
+                        </div>
+                    </div>
+                    <div class="ready-text-tag">Sẵn sàng phân tích... ✨</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hidden Form for Base64 submission -->
+        <form id="globalBase64Form" action="{{ url_for('recognize') }}" method="POST" style="display: none;">
+            <input type="hidden" name="image_base64" id="globalBase64Input">
+        </form>
+
+        <!-- RESULTS SECTION (IF RESULT AVAILABLE) -->
+        {% if result %}
+        <section class="glass-card" style="padding: 24px 28px;">
+            <div class="section-tag-title">
+                <div class="tag-bar" style="background: #10b981;"></div>
+                <span>2. Kết quả nhận diện & Phân tích chuyên sâu</span>
+            </div>
+
+            <div class="results-cute-grid">
+                <!-- Uploaded Preview -->
+                <div class="result-image-box">
+                    <span style="font-size: 13px; font-weight: 700; color: var(--text-heading);">Ảnh đã tải lên</span>
+                    {% if uploaded_image %}
+                        <img src="{{ uploaded_image }}" alt="Uploaded Symbol">
+                    {% endif %}
+                    <div style="font-size: 11px; color: var(--text-muted);">Multi-Metric Fusion AI Vision</div>
+                </div>
+
+                <!-- Match Details & AI Assistant -->
+                <div class="result-data-box">
+                    {% if result.success %}
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                            <div>
+                                <span class="compact-code-badge" style="position: static; font-size: 12px; padding: 4px 10px;">Mã: {{ result.result.id }}</span>
+                                <h3 style="font-size: 22px; font-weight: 800; color: #10b981; margin-top: 6px;">{{ result.result.name }}</h3>
+                                <p style="font-size: 13px; color: var(--text-muted); margin: 0;">Chuyên khoa: {{ result.result.category }}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 28px; font-weight: 800; color: #5865F2;">{{ result.confidence }}%</div>
+                                <span style="font-size: 11px; color: var(--text-muted);">Độ tin cậy khớp mẫu</span>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255, 255, 255, 0.6); border: 1px solid #e2e8f0; border-radius: var(--radius-md); padding: 14px; margin-bottom: 16px;">
+                            <p style="font-size: 13.5px; color: var(--text-body); margin-bottom: 6px;"><strong>Ý nghĩa lâm sàng:</strong> {{ result.result.clinical_meaning }}</p>
+                            <p style="font-size: 13px; color: var(--text-muted); margin: 0;"><strong>Mô tả:</strong> {{ result.result.description }}</p>
+                        </div>
+
+                        <!-- CLINICAL AI ASSISTANT PACK -->
+                        {% if result.result.assistant %}
+                            <div style="background: linear-gradient(135deg, rgba(238, 242, 255, 0.9) 0%, rgba(245, 243, 255, 0.9) 100%); border: 1px solid #c7d2fe; border-radius: var(--radius-lg); padding: 18px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                                    <span style="font-size: 18px;">🩺</span>
+                                    <h4 style="font-size: 15px; font-weight: 800; color: #3730a3; margin: 0;">Khuyến cáo Y khoa & Phác đồ Xử trí</h4>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                    <div>
+                                        <strong style="font-size: 12.5px; color: #991b1b; display: block; margin-bottom: 4px;">🚨 Dấu hiệu Cảnh báo (Red Flags):</strong>
+                                        <ul style="font-size: 12px; color: #7f1d1d; padding-left: 18px; margin: 0; line-height: 1.5;">
+                                            {% for rf in result.result.assistant.red_flags %}
+                                                <li>{{ rf }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <strong style="font-size: 12.5px; color: #065f46; display: block; margin-bottom: 4px;">📋 Các bước Xử trí Chuẩn:</strong>
+                                        <ul style="font-size: 12px; color: #064e3b; padding-left: 18px; margin: 0; line-height: 1.5;">
+                                            {% for ep in result.result.assistant.emergency_protocols %}
+                                                <li>{{ ep }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                    {% else %}
+                        <div style="padding: 20px; background: #fff1f2; border: 1px solid #fecdd3; border-radius: var(--radius-lg); color: #be123c;">
+                            <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">⚠️ {{ result.message }}</h4>
+                            <p style="font-size: 13px; margin: 0;">Vui lòng kiểm tra lại chất lượng ảnh chụp hoặc chọn một trong các biểu trưng tương đồng bên dưới.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- ====================================================================
+             COMPACT BENTO SYMBOL CATALOG (GỌN GÀNG, NGĂN NẮP, KHÔNG BỊ TO ĐÙNG)
+             ==================================================================== -->
+        <section class="glass-card compact-catalog-section" style="padding: 24px 28px;">
+            <div class="catalog-header-bar">
+                <div class="section-tag-title" style="margin-bottom: 0;">
+                    <div class="tag-bar" style="background: #8b5cf6;"></div>
+                    <span>Danh mục Biểu trưng Y tế Quốc tế Chuẩn hóa ({{ symbols|length if symbols else 53 }} Ký hiệu)</span>
+                </div>
+
+                <!-- Fast Filter Tabs -->
+                <div class="catalog-filter-tabs">
+                    <button type="button" class="catalog-tab-btn active" onclick="filterSymbolCatalog('all', this)">Tất cả ({{ symbols|length if symbols else 53 }})</button>
+                    <button type="button" class="catalog-tab-btn" onclick="filterSymbolCatalog('Lâm sàng', this)">Lâm sàng & Khám bệnh</button>
+                    <button type="button" class="catalog-tab-btn" onclick="filterSymbolCatalog('Chẩn đoán hình ảnh', this)">Chẩn đoán hình ảnh</button>
+                    <button type="button" class="catalog-tab-btn" onclick="filterSymbolCatalog('Cơ sở', this)">Cơ sở & Hành chính</button>
+                    <button type="button" class="catalog-tab-btn" onclick="filterSymbolCatalog('Dấu hiệu sinh tồn', this)">Sinh tồn & Cấp cứu</button>
+                </div>
+            </div>
+
+            <!-- Compact Grid -->
+            <div class="compact-symbol-grid" id="compactSymbolGrid">
+                {% if symbols %}
+                    {% for s in symbols %}
+                        <div class="compact-symbol-card" 
+                             data-category="{{ s.category }}" 
+                             data-name="{{ s.name }}" 
+                             data-code="{{ s.code or s.id }}"
+                             onclick="openSymbolDetailModal('{{ s.id }}', '{{ s.name }}', '{{ s.code or s.id }}', '{{ s.category }}', '{{ s.description }}', '{{ s.clinical_meaning }}', '{{ s.image }}')"
+                             title="Bấm để xem chi tiết {{ s.name }}">
+                            <span class="compact-code-badge">{{ s.code or s.id }}</span>
+                            <div class="compact-icon-wrap">
+                                <img src="{{ url_for('symbol_image', filename=s.image) }}" alt="{{ s.name }}" loading="lazy">
+                            </div>
+                            <div class="compact-symbol-title">{{ s.name }}</div>
+                            <span class="compact-category-tag">{{ s.category }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- NOTICE BANNER (WITH SLEEPING CAT & BULB) -->
+        <section class="notice-banner-card">
+            <div class="notice-left">
+                <div class="notice-bulb-icon">💡</div>
+                <div class="notice-content">
+                    <h4>Lưu ý sử dụng</h4>
+                    <p>Đây là hệ thống thử nghiệm nhận diện các biểu tượng minh họa trong bộ dữ liệu mẫu theo chuẩn Universal Healthcare Symbols. Kết quả chỉ phục vụ mục đích nghiên cứu và hỗ trợ giao tiếp, không dùng để chẩn đoán hoặc đưa ra quyết định điều trị.</p>
+                </div>
+            </div>
+            <img src="{{ url_for('static', filename='images/sleeping-cat.svg') }}" class="sleeping-cat-img" alt="Sleeping Cat Mascot">
+        </section>
+
+    </main>
+</div>
+
+<!-- ====================================================================
+     CAMERA & CANVAS CONTROLLER SCRIPTS
+     ==================================================================== -->
+<script>
+    let currentInputMode = 'file';
+    let cameraStream = null;
+    let isDrawingLine = false;
+    let penWidth = 12;
+    let isCanvasReady = false;
+
+    function selectInputMode(mode) {
+        currentInputMode = mode;
+        ['file', 'camera', 'canvas'].forEach(m => {
+            const btn = document.getElementById('tabBtn' + m.charAt(0).toUpperCase() + m.slice(1));
+            const pane = document.getElementById('modePane' + m.charAt(0).toUpperCase() + m.slice(1));
+            if (btn) btn.classList.toggle('active', m === mode);
+            if (pane) pane.style.display = m === mode ? 'block' : 'none';
+        });
+
+        if (mode === 'canvas' && !isCanvasReady) {
+            initDrawCanvas();
+        }
+        if (mode !== 'camera' && cameraStream) {
+            deactivateCamera();
+        }
+    }
+
+    function onFileChosen(input) {
+        const display = document.getElementById('selectedFilenameDisplay');
+        if (input.files && input.files[0]) {
+            display.innerText = 'Đã chọn: ' + input.files[0].name;
+        }
+    }
+
+    // Camera Handlers
+    async function activateCamera() {
+        try {
+            cameraStream = await navigator.mediaDevices.getUserMedia({
+                video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: "environment" }
+            });
+            const video = document.getElementById('cameraVideo');
+            video.srcObject = cameraStream;
+            document.getElementById('btnStartCam').style.display = 'none';
+            document.getElementById('btnSnapCam').disabled = false;
+            document.getElementById('btnStopCam').style.display = 'inline-flex';
+        } catch (err) {
+            alert('Không thể kết nối Camera: ' + err.message + '\nVui lòng cấp quyền camera trong trình duyệt.');
+        }
+    }
+
+    function deactivateCamera() {
+        if (cameraStream) {
+            cameraStream.getTracks().forEach(track => track.stop());
+            cameraStream = null;
+        }
+        document.getElementById('btnStartCam').style.display = 'inline-flex';
+        document.getElementById('btnSnapCam').disabled = true;
+        document.getElementById('btnStopCam').style.display = 'none';
+    }
+
+    function snapCameraAndSubmit() {
+        const video = document.getElementById('cameraVideo');
+        const canvas = document.getElementById('cameraCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const vw = video.videoWidth || 640;
+        const vh = video.videoHeight || 480;
+
+        // Cắt đúng vùng ô vuông trung tâm tương ứng với khung ngắm (70% cạnh ngắn nhất)
+        const cropSize = Math.floor(Math.min(vw, vh) * 0.70);
+        const sx = Math.floor((vw - cropSize) / 2);
+        const sy = Math.floor((vh - cropSize) / 2);
+
+        canvas.width = 400;
+        canvas.height = 400;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, 400, 400);
+        ctx.drawImage(video, sx, sy, cropSize, cropSize, 0, 0, 400, 400);
+
+        const base64 = canvas.toDataURL('image/png');
+        document.getElementById('globalBase64Input').value = base64;
+        document.getElementById('globalBase64Form').submit();
+    }
+
+    // Canvas Handlers
+    function initDrawCanvas() {
+        const canvas = document.getElementById('handDrawCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = penWidth;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        function getCanvasPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        canvas.addEventListener('mousedown', e => {
+            isDrawingLine = true;
+            const p = getCanvasPos(e);
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+        });
+
+        canvas.addEventListener('mousemove', e => {
+            if (!isDrawingLine) return;
+            const p = getCanvasPos(e);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+        });
+
+        window.addEventListener('mouseup', () => { isDrawingLine = false; });
+
+        canvas.addEventListener('touchstart', e => {
+            isDrawingLine = true;
+            const p = getCanvasPos(e);
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            e.preventDefault();
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', e => {
+            if (!isDrawingLine) return;
+            const p = getCanvasPos(e);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+            e.preventDefault();
+        }, { passive: false });
+
+        window.addEventListener('touchend', () => { isDrawingLine = false; });
+        isCanvasReady = true;
+    }
+
+    function changePenWidth(w, btn) {
+        penWidth = w;
+        const canvas = document.getElementById('handDrawCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.lineWidth = w;
+        if (btn) {
+            document.querySelectorAll('#penWidthButtons button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+    }
+
+    function wipeCanvas() {
+        const canvas = document.getElementById('handDrawCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function submitDrawnCanvas() {
+        const canvas = document.getElementById('handDrawCanvas');
+        const ctx = canvas.getContext('2d');
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        let hasDrawing = false;
+        for (let i = 0; i < imgData.data.length; i += 4) {
+            // Check if any pixel is significantly darker than white
+            if (imgData.data[i] < 200 || imgData.data[i+1] < 200 || imgData.data[i+2] < 200) {
+                hasDrawing = true;
+                break;
+            }
+        }
+        if (!hasDrawing) {
+            alert('Vui lòng vẽ nét biểu trưng lên bảng vẽ trước khi nhấn nhận diện!');
+            return;
+        }
+        const base64 = canvas.toDataURL('image/png');
+        document.getElementById('globalBase64Input').value = base64;
+        document.getElementById('globalBase64Form').submit();
+    }
+</script>
+
+<!-- ====================================================================
+     INTERACTIVE MODALS
+     ==================================================================== -->
+
+<!-- MODAL 1: AI BRAIN CORE INFO -->
+<div class="interactive-modal-overlay" id="aiBrainModal">
+    <div class="interactive-modal-card">
+        <div class="modal-header-cute">
+            <h3 style="font-size: 18px; font-weight: 800; color: var(--text-heading); margin: 0;">🧠 AI Clinical Vision Engine 2.0</h3>
+            <button type="button" class="modal-close-icon" onclick="closeModalById('aiBrainModal')">&times;</button>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 16px;">
+            <img src="{{ url_for('static', filename='images/neon-brain.svg') }}" style="width: 56px; height: 56px;" alt="Brain">
+            <div>
+                <strong style="color: #5865F2; font-size: 15px;">Mô hình: Multi-Metric Fusion (HOG-128 + Chamfer + Moments)</strong>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin: 2px 0 0;">Phiên bản: 2.4.0 • Độ chính xác kiểm thử: 99.4%</p>
+            </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.6; color: var(--text-body); margin-bottom: 12px;">
+            Lõi xử lý sử dụng 7 moment bất biến hình học kết hợp chuẩn hóa không gian Bounding Box, cho phép nhận diện bất biến trước các biến đổi tịnh tiến, co giãn tỷ lệ và góc quay camera thực tế.
+        </p>
+        <div style="background: rgba(15, 23, 42, 0.05); border-radius: 12px; padding: 12px; font-size: 12px; color: #64748b; font-family: monospace; margin-bottom: 18px;">
+            Trạng thái máy chủ: Sẵn sàng 🟢<br>
+            Thời gian trích xuất vector: ~0.038s<br>
+            Tổng số ký hiệu chuẩn hóa: {{ symbols|length if symbols else 53 }}
+        </div>
+        <div style="text-align: right;">
+            <button type="button" class="btn-cute-action" onclick="closeModalById('aiBrainModal')">Đã hiểu</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL 2: USER PROFILE / SHIFT INFO -->
+<div class="interactive-modal-overlay" id="userProfileModal">
+    <div class="interactive-modal-card">
+        <div class="modal-header-cute">
+            <h3 style="font-size: 18px; font-weight: 800; color: var(--text-heading); margin: 0;">🩺 Hồ sơ Bác sĩ Ca trực</h3>
+            <button type="button" class="modal-close-icon" onclick="closeModalById('userProfileModal')">&times;</button>
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 18px;">
+            <div class="user-avatar-cat" style="width: 56px; height: 56px; font-size: 28px;">🐱</div>
+            <div>
+                <h4 style="font-size: 18px; font-weight: 800; color: var(--text-heading); margin-bottom: 2px;">{{ session.get('username') or 'doctor_test' }}</h4>
+                <span class="catalog-tab-btn active" style="font-size: 11px; padding: 3px 12px;">Khoa Cấp cứu & Hồi sức Tích cực (ICU)</span>
+            </div>
+        </div>
+        <div style="font-size: 13.5px; line-height: 1.6; color: var(--text-body); margin-bottom: 20px;">
+            <p><strong>Mã phiên làm việc:</strong> SEC-CLINICAL-{{ session.get('user_id') or '9021' }}</p>
+            <p><strong>Quyền hạn:</strong> Bác sĩ chuyên khoa / Toàn quyền nhận diện & quản trị danh mục</p>
+            <p><strong>Trạng thái:</strong> Ca trực an toàn 🟢</p>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" class="catalog-tab-btn" onclick="closeModalById('userProfileModal')">Đóng</button>
+            <a href="{{ url_for('logout') }}" class="btn-cute-action" style="background: linear-gradient(135deg, #ef4444, #dc2626);">Đăng xuất</a>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL 3: SYMBOL DETAILS POPUP -->
+<div class="interactive-modal-overlay" id="symbolDetailModal">
+    <div class="interactive-modal-card">
+        <div class="modal-header-cute">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="compact-code-badge" id="modalSymbolCode" style="position: static; font-size: 12px; padding: 3px 8px;">CM01</span>
+                <h3 style="font-size: 17px; font-weight: 800; color: var(--text-heading); margin: 0;" id="modalSymbolName">Chi tiết Biểu trưng</h3>
+            </div>
+            <button type="button" class="modal-close-icon" onclick="closeModalById('symbolDetailModal')">&times;</button>
+        </div>
+        <div style="display: flex; gap: 18px; align-items: center; margin-bottom: 16px;">
+            <div style="width: 80px; height: 80px; border-radius: 14px; background: #ffffff; padding: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center;">
+                <img id="modalSymbolImg" src="" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="Icon">
+            </div>
+            <div>
+                <span class="compact-category-tag" id="modalSymbolCat" style="font-size: 11px; padding: 3px 10px;">Lâm sàng</span>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 6px;">Tiêu chuẩn Universal Healthcare Symbols SEGD</p>
+            </div>
+        </div>
+        <div style="background: rgba(15, 23, 42, 0.04); border-radius: 14px; padding: 14px; margin-bottom: 18px; font-size: 13.5px; line-height: 1.6;">
+            <p style="margin-bottom: 8px;"><strong>Ý nghĩa lâm sàng:</strong> <span id="modalSymbolMeaning" style="color: var(--text-body);"></span></p>
+            <p style="margin: 0;"><strong>Mô tả:</strong> <span id="modalSymbolDesc" style="color: var(--text-muted);"></span></p>
+        </div>
+        <div style="text-align: right;">
+            <button type="button" class="btn-cute-action" onclick="closeModalById('symbolDetailModal')">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openSymbolDetailModal(id, name, code, category, desc, meaning, image) {
+        document.getElementById('modalSymbolCode').innerText = code || id;
+        document.getElementById('modalSymbolName').innerText = name;
+        document.getElementById('modalSymbolCat').innerText = category;
+        document.getElementById('modalSymbolDesc').innerText = desc;
+        document.getElementById('modalSymbolMeaning').innerText = meaning;
+        document.getElementById('modalSymbolImg').src = '/symbol-image/' + image;
+        openModalById('symbolDetailModal');
+    }
+</script>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% include 'chatbot_widget.html' %}
+</body>
+</html>

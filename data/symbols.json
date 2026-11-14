@@ -1,0 +1,790 @@
+[
+  {
+    "id": "SYM001",
+    "name": "Biểu trưng nhịp tim",
+    "category": "Dấu hiệu sinh tồn",
+    "description": "Biểu trưng minh họa hoạt động và nhịp đập của tim.",
+    "clinical_meaning": "Dùng để biểu thị thông tin theo dõi hoạt động tim trong môi trường lâm sàng.",
+    "related": [
+      "SYM002",
+      "SYM003"
+    ],
+    "image": "SYM001.png"
+  },
+  {
+    "id": "SYM002",
+    "name": "Biểu trưng huyết áp",
+    "category": "Dấu hiệu sinh tồn",
+    "description": "Biểu trưng minh họa hoạt động đo huyết áp.",
+    "clinical_meaning": "Liên quan đến việc theo dõi chỉ số huyết áp của người bệnh.",
+    "related": [
+      "SYM001",
+      "SYM003"
+    ],
+    "image": "SYM002.png"
+  },
+  {
+    "id": "SYM003",
+    "name": "Biểu trưng thân nhiệt",
+    "category": "Dấu hiệu sinh tồn",
+    "description": "Biểu trưng nhiệt kế dùng để thể hiện thân nhiệt.",
+    "clinical_meaning": "Liên quan đến hoạt động đo và theo dõi nhiệt độ cơ thể.",
+    "related": [
+      "SYM001",
+      "SYM002"
+    ],
+    "image": "SYM003.png"
+  },
+  {
+    "id": "SYM004",
+    "name": "Biểu trưng cấp cứu",
+    "category": "Cấp cứu",
+    "description": "Biểu trưng minh họa hoạt động hỗ trợ cấp cứu.",
+    "clinical_meaning": "Dùng để nhận biết thông tin hoặc khu vực liên quan đến cấp cứu.",
+    "related": [
+      "SYM005",
+      "SYM006"
+    ],
+    "image": "SYM004.png"
+  },
+  {
+    "id": "SYM005",
+    "name": "Biểu trưng hồi sức",
+    "category": "Cấp cứu",
+    "description": "Biểu trưng minh họa hoạt động hồi sức.",
+    "clinical_meaning": "Liên quan đến các hoạt động hỗ trợ hồi sức trong cơ sở y tế.",
+    "related": [
+      "SYM004",
+      "SYM006"
+    ],
+    "image": "SYM005.png"
+  },
+  {
+    "id": "SYM006",
+    "name": "Biểu trưng cảnh báo",
+    "category": "Cấp cứu",
+    "description": "Biểu trưng cảnh báo nguy cơ hoặc tình huống cần chú ý.",
+    "clinical_meaning": "Giúp truyền đạt thông tin cảnh báo trong môi trường lâm sàng.",
+    "related": [
+      "SYM004",
+      "SYM005"
+    ],
+    "image": "SYM006.png"
+  },
+  {
+    "id": "SYM007",
+    "name": "Biểu trưng xét nghiệm máu",
+    "category": "Xét nghiệm",
+    "description": "Biểu trưng minh họa mẫu máu xét nghiệm.",
+    "clinical_meaning": "Liên quan đến hoạt động lấy và phân tích mẫu máu.",
+    "related": [
+      "SYM008",
+      "SYM009"
+    ],
+    "image": "SYM007.png"
+  },
+  {
+    "id": "SYM008",
+    "name": "Biểu trưng mẫu bệnh phẩm",
+    "category": "Xét nghiệm",
+    "description": "Biểu trưng minh họa mẫu bệnh phẩm.",
+    "clinical_meaning": "Dùng để biểu thị thông tin liên quan đến mẫu bệnh phẩm.",
+    "related": [
+      "SYM007",
+      "SYM009"
+    ],
+    "image": "SYM008.png"
+  },
+  {
+    "id": "SYM009",
+    "name": "Biểu trưng xét nghiệm",
+    "category": "Xét nghiệm",
+    "description": "Biểu trưng hoạt động xét nghiệm trong y tế.",
+    "clinical_meaning": "Liên quan đến quy trình phân tích và kiểm tra mẫu.",
+    "related": [
+      "SYM007",
+      "SYM008"
+    ],
+    "image": "SYM009.png"
+  },
+  {
+    "id": "SYM010",
+    "name": "Biểu trưng thuốc",
+    "category": "Chăm sóc lâm sàng",
+    "description": "Biểu trưng minh họa thuốc hoặc dược phẩm.",
+    "clinical_meaning": "Liên quan đến thông tin thuốc trong quá trình chăm sóc người bệnh.",
+    "related": [
+      "SYM011",
+      "SYM012"
+    ],
+    "image": "SYM010.png"
+  },
+  {
+    "id": "SYM011",
+    "name": "Biểu trưng truyền dịch",
+    "category": "Chăm sóc lâm sàng",
+    "description": "Biểu trưng minh họa hoạt động truyền dịch.",
+    "clinical_meaning": "Liên quan đến hoạt động truyền dịch trong chăm sóc lâm sàng.",
+    "related": [
+      "SYM010",
+      "SYM012"
+    ],
+    "image": "SYM011.png"
+  },
+  {
+    "id": "SYM012",
+    "name": "Biểu trưng theo dõi bệnh nhân",
+    "category": "Chăm sóc lâm sàng",
+    "description": "Biểu trưng minh họa hoạt động theo dõi người bệnh.",
+    "clinical_meaning": "Liên quan đến việc quan sát và theo dõi tình trạng người bệnh.",
+    "related": [
+      "SYM010",
+      "SYM011"
+    ],
+    "image": "SYM012.png"
+  },
+  {
+    "id": "CM01",
+    "code": "CM01",
+    "name": "Dịch vụ Y tế Lâm sàng",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng chữ thập y tế đại diện cho toàn bộ các dịch vụ khám chữa bệnh lâm sàng tổng quát.",
+    "clinical_meaning": "Chỉ dẫn khu vực cung cấp dịch vụ khám chữa bệnh và chăm sóc sức khỏe ban đầu.",
+    "related": [
+      "FA01",
+      "CM08",
+      "CM02"
+    ],
+    "image": "CM01.png"
+  },
+  {
+    "id": "CM02",
+    "code": "CM02",
+    "name": "Khu vực Nhân viên Y tế",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng bác sĩ và điều dưỡng trực lâm sàng tại trạm điều dưỡng.",
+    "clinical_meaning": "Vị trí trạm trực điều dưỡng, bàn giao ca trực và hỗ trợ người bệnh 24/7.",
+    "related": [
+      "CM01",
+      "CM03",
+      "CM04"
+    ],
+    "image": "CM02.png"
+  },
+  {
+    "id": "CM03",
+    "code": "CM03",
+    "name": "Hồi sức Tích cực (ICU)",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng giường bệnh hồi sức có màn hình monitor theo dõi dấu hiệu sinh tồn liên tục.",
+    "clinical_meaning": "Khoa Hồi sức tích cực (ICU) dành cho người bệnh nặng, suy đa tạng hoặc sau đại phẫu.",
+    "related": [
+      "CM04",
+      "SYM001",
+      "SYM005"
+    ],
+    "image": "CM03.png"
+  },
+  {
+    "id": "CM04",
+    "code": "CM04",
+    "name": "Bệnh nhân Nội trú",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng giường bệnh nội trú kèm đồng hồ theo dõi thời gian nằm viện.",
+    "clinical_meaning": "Khu vực các phòng bệnh nội trú, chăm sóc toàn diện 24/24 trong thời gian lưu viện.",
+    "related": [
+      "CM03",
+      "CM05",
+      "FA04"
+    ],
+    "image": "CM04.png"
+  },
+  {
+    "id": "CM05",
+    "code": "CM05",
+    "name": "Khám bệnh Ngoại trú",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng người bệnh di chuyển thực hiện các dịch vụ khám bệnh ngoại trú trong ngày.",
+    "clinical_meaning": "Khu vực các phòng khám chuyên khoa ngoại trú, không yêu cầu nằm lại qua đêm.",
+    "related": [
+      "CM04",
+      "FA03",
+      "CM08"
+    ],
+    "image": "CM05.png"
+  },
+  {
+    "id": "CM06",
+    "code": "CM06",
+    "name": "Nhà thuốc & Kho dược",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng lọ thuốc đơn kê Rx đại diện cho dịch vụ Dược lâm sàng và cấp phát thuốc.",
+    "clinical_meaning": "Khu vực cấp phát thuốc theo đơn bảo hiểm y tế và tư vấn sử dụng thuốc an toàn.",
+    "related": [
+      "SYM011",
+      "FA07",
+      "CM07"
+    ],
+    "image": "CM06.png"
+  },
+  {
+    "id": "CM07",
+    "code": "CM07",
+    "name": "Đái tháo đường & Nội tiết",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng kiểm tra đường huyết qua giọt máu đầu ngón tay cho bệnh nhân đái tháo đường.",
+    "clinical_meaning": "Khoa Nội tiết, quản lý bệnh đái tháo đường và tư vấn dinh dưỡng kiểm soát đường huyết.",
+    "related": [
+      "CM10",
+      "SYM010",
+      "CM06"
+    ],
+    "image": "CM07.png"
+  },
+  {
+    "id": "CM08",
+    "code": "CM08",
+    "name": "Y học Gia đình & Đa khoa",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng bác sĩ gia đình thăm khám và chăm sóc sức khỏe cho các thế hệ trong gia đình.",
+    "clinical_meaning": "Phòng khám Đa khoa và Y học gia đình, quản lý sức khỏe liên tục và toàn diện.",
+    "related": [
+      "CM01",
+      "CM05",
+      "CM26"
+    ],
+    "image": "CM08.png"
+  },
+  {
+    "id": "CM09",
+    "code": "CM09",
+    "name": "Tiêm chủng & Vắc xin",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng tiêm phòng vắc xin cho trẻ em và người lớn.",
+    "clinical_meaning": "Khu vực tiêm chủng mở rộng, tiêm ngừa theo yêu cầu và tư vấn miễn dịch dự phòng.",
+    "related": [
+      "CM26",
+      "CM28",
+      "CM06"
+    ],
+    "image": "CM09.png"
+  },
+  {
+    "id": "CM10",
+    "code": "CM10",
+    "name": "Dinh dưỡng & Tiết chế",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng cán cân dinh dưỡng cân bằng giữa ngũ cốc và trái cây tươi.",
+    "clinical_meaning": "Khoa Dinh dưỡng lâm sàng, lập chế độ ăn bệnh lý (suy thận, đái tháo đường, sau mổ).",
+    "related": [
+      "CM07",
+      "CM21",
+      "CM08"
+    ],
+    "image": "CM10.png"
+  },
+  {
+    "id": "CM12",
+    "code": "CM12",
+    "name": "Phòng Xét nghiệm Vi sinh",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng kính hiển vi quang học chuyên dụng phân tích mẫu bệnh phẩm lâm sàng.",
+    "clinical_meaning": "Khoa Xét nghiệm Hóa sinh - Huyết học - Vi sinh phục vụ chẩn đoán chính xác.",
+    "related": [
+      "CM13",
+      "SYM009",
+      "SYM010"
+    ],
+    "image": "CM12.png"
+  },
+  {
+    "id": "CM15",
+    "code": "CM15",
+    "name": "Khoa Mắt & Khúc xạ",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng con mắt giải phẫu đại diện cho chuyên khoa Nhãn khoa và thị lực.",
+    "clinical_meaning": "Khoa Mắt: khám khúc xạ, đo nhãn áp, điều trị đục thủy tinh thể và bệnh võng mạc.",
+    "related": [
+      "CM05",
+      "CM17",
+      "CM01"
+    ],
+    "image": "CM15.png"
+  },
+  {
+    "id": "CM16",
+    "code": "CM16",
+    "name": "Sức khỏe Tâm thần & Tâm lý",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng bánh răng tư duy trong não bộ đại diện cho chăm sóc tâm lý và thần kinh học.",
+    "clinical_meaning": "Khoa Tâm thần & Tâm lý lâm sàng, hỗ trợ điều trị trầm cảm, âu lo và rối loạn giấc ngủ.",
+    "related": [
+      "CM17",
+      "CM30",
+      "FA11"
+    ],
+    "image": "CM16.png"
+  },
+  {
+    "id": "CM17",
+    "code": "CM17",
+    "name": "Khoa Thần kinh & Não bộ",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng cấu trúc bán cầu đại não và hệ thần kinh trung ương.",
+    "clinical_meaning": "Khoa Thần kinh: điều trị đột quỵ não, động kinh, Parkinson và bệnh lý thần kinh cơ.",
+    "related": [
+      "CM16",
+      "MA03",
+      "MA04"
+    ],
+    "image": "CM17.png"
+  },
+  {
+    "id": "CM18",
+    "code": "CM18",
+    "name": "Khoa Da liễu & Thẩm mỹ",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng khuôn mặt với bàn tay kiểm tra tổn thương da bề mặt.",
+    "clinical_meaning": "Khoa Da liễu: chẩn đoán viêm da, dị ứng thuốc, vảy nến và u hạt da liễu.",
+    "related": [
+      "CM28",
+      "CM05",
+      "CM01"
+    ],
+    "image": "CM18.png"
+  },
+  {
+    "id": "CM20",
+    "code": "CM20",
+    "name": "Khoa Hô hấp & Phổi",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng giải phẫu khí quản và hai lá phổi kèm phế quản.",
+    "clinical_meaning": "Khoa Hô hấp: thăm dò chức năng thông khí phổi, điều trị hen suyễn, COPD và viêm phổi.",
+    "related": [
+      "CM21",
+      "MA01",
+      "CM03"
+    ],
+    "image": "CM20.png"
+  },
+  {
+    "id": "CM22",
+    "code": "CM22",
+    "name": "Khoa Thận & Tiết niệu",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng hai quả thận lọc máu và hệ bài tiết nước tiểu.",
+    "clinical_meaning": "Khoa Thận - Tiết niệu & Lọc máu nhân tạo: điều trị suy thận mạn và chạy thận chu kỳ.",
+    "related": [
+      "CM21",
+      "SYM007",
+      "CM03"
+    ],
+    "image": "CM22.png"
+  },
+  {
+    "id": "CM23",
+    "code": "CM23",
+    "name": "Khoa Tim mạch & Can thiệp",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng trái tim với đường sóng điện tim ECG nội tại đại diện cho hệ tuần hoàn.",
+    "clinical_meaning": "Khoa Tim mạch: can thiệp mạch vành, siêu âm tim, điều trị suy tim và tăng huyết áp.",
+    "related": [
+      "SYM001",
+      "SYM002",
+      "SYM006"
+    ],
+    "image": "CM23.png"
+  },
+  {
+    "id": "CM24",
+    "code": "CM24",
+    "name": "Sản phụ khoa & Phụ nữ",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng sức khỏe phụ nữ kết hợp ký hiệu Venus và hình tượng cơ thể.",
+    "clinical_meaning": "Khoa Sản phụ khoa: tầm soát ung thư cổ tử cung, khám thai định kỳ và chăm sóc tiền sản.",
+    "related": [
+      "CM25",
+      "MA05",
+      "CM08"
+    ],
+    "image": "CM24.png"
+  },
+  {
+    "id": "CM26",
+    "code": "CM26",
+    "name": "Khoa Nhi & Chăm sóc Trẻ em",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng chú gấu Teddy đeo ống nghe bác sĩ tạo sự thân thiện cho các bệnh nhi.",
+    "clinical_meaning": "Khoa Nhi: khám chữa bệnh chuyên sâu và theo dõi biểu đồ phát triển thể chất của trẻ.",
+    "related": [
+      "CM09",
+      "CM08",
+      "CM01"
+    ],
+    "image": "CM26.png"
+  },
+  {
+    "id": "CM27",
+    "code": "CM27",
+    "name": "Di truyền học & DNA",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng chuỗi xoắn kép ADN kết nối các thế hệ trong gia đình.",
+    "clinical_meaning": "Trung tâm Di truyền y học: xét nghiệm đột biến gen, sàng lọc trước sinh và tư vấn di truyền.",
+    "related": [
+      "CM12",
+      "CM24",
+      "CM08"
+    ],
+    "image": "CM27.png"
+  },
+  {
+    "id": "CM28",
+    "code": "CM28",
+    "name": "Kiểm soát Bệnh Truyền nhiễm",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng phòng chống giọt bắn sol khí và kiểm soát nhiễm khuẩn lây lan qua đường thở.",
+    "clinical_meaning": "Khoa Bệnh nhiệt đới & Kiểm soát nhiễm khuẩn bệnh viện: cách ly và điều trị dịch bệnh.",
+    "related": [
+      "CM20",
+      "CM09",
+      "CM12"
+    ],
+    "image": "CM28.png"
+  },
+  {
+    "id": "CM29",
+    "code": "CM29",
+    "name": "Khoa Răng Hàm Mặt",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng chiếc răng hàm giải phẫu học đại diện cho nha khoa chuyên sâu.",
+    "clinical_meaning": "Khoa Răng Hàm Mặt: nhổ răng, chỉnh nha, phục hình răng sứ và điều trị tủy.",
+    "related": [
+      "CM05",
+      "CM31",
+      "CM01"
+    ],
+    "image": "CM29.png"
+  },
+  {
+    "id": "CM30",
+    "code": "CM30",
+    "name": "Gây mê Hồi sức & Giảm đau",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng khuôn mặt người bệnh chìm vào giấc ngủ gây mê an toàn không đau đớn.",
+    "clinical_meaning": "Khoa Gây mê hồi sức: đảm bảo vô cảm phẫu thuật, kiểm soát huyết động và giảm đau sau mổ.",
+    "related": [
+      "CM31",
+      "CM03",
+      "SYM001"
+    ],
+    "image": "CM30.png"
+  },
+  {
+    "id": "CM31",
+    "code": "CM31",
+    "name": "Khoa Ngoại & Phẫu thuật",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng kíp phẫu thuật viên thực hiện ca mổ tại phòng phẫu thuật vô khuẩn.",
+    "clinical_meaning": "Khu phẫu thuật phòng mổ: thực hiện các can thiệp ngoại khoa nội soi và mổ hở.",
+    "related": [
+      "CM30",
+      "CM03",
+      "FA01"
+    ],
+    "image": "CM31.png"
+  },
+  {
+    "id": "CM32",
+    "code": "CM32",
+    "name": "Vật lý Trị liệu & Phục hồi",
+    "category": "Lâm sàng & Khám bệnh",
+    "description": "Biểu trưng kỹ thuật viên hỗ trợ người bệnh tập luyện phục hồi chức năng vận động.",
+    "clinical_meaning": "Khoa Phục hồi chức năng: tập vật lý trị liệu sau tai biến, gãy xương và thoái hóa cột sống.",
+    "related": [
+      "CM05",
+      "CM17",
+      "CM08"
+    ],
+    "image": "CM32.png"
+  },
+  {
+    "id": "FA01",
+    "code": "FA01",
+    "name": "Khoa Cấp cứu Khẩn cấp (ER)",
+    "category": "Cơ sở & Hành chính",
+    "description": "Biểu trưng chữ thập cấp cứu khẩn cấp nổi bật phân luồng ưu tiên cấp cứu hàng đầu.",
+    "clinical_meaning": "Khoa Cấp cứu (Emergency Department): tiếp nhận xử trí bệnh nhân nguy kịch 24/7.",
+    "related": [
+      "FA02",
+      "SYM004",
+      "CM03"
+    ],
+    "image": "FA01.png"
+  },
+  {
+    "id": "FA02",
+    "code": "FA02",
+    "name": "Đội Xe Cấp cứu 115",
+    "category": "Cơ sở & Hành chính",
+    "description": "Biểu trưng xe cứu thương chuyên dụng kèm chữ thập đỏ và đèn còi cảnh báo.",
+    "clinical_meaning": "Dịch vụ cấp cứu trước viện 115: vận chuyển bệnh nhân nguy kịch và cấp cứu tại hiện trường.",
+    "related": [
+      "FA01",
+      "SYM004",
+      "CM03"
+    ],
+    "image": "FA02.png"
+  },
+  {
+    "id": "FA03",
+    "code": "FA03",
+    "name": "Quầy Tiếp đón & Đăng ký",
+    "category": "Cơ sở & Hành chính",
+    "description": "Biểu trưng quầy lễ tân tiếp nhận bệnh nhân đăng ký khám và lấy số thứ tự.",
+    "clinical_meaning": "Khu vực tiếp đón, kiểm tra thẻ BHYT, căn cước công dân và phân luồng phòng khám.",
+    "related": [
+      "FA04",
+      "FA07",
+      "CM05"
+    ],
+    "image": "FA03.png"
+  },
+  {
+    "id": "FA04",
+    "code": "FA04",
+    "name": "Khu vực Phòng chờ",
+    "category": "Cơ sở & Hành chính",
+    "description": "Biểu trưng hàng ghế phòng chờ tiện nghi kèm đồng hồ quản lý thời gian chờ đợi.",
+    "clinical_meaning": "Khu vực chờ kết quả cận lâm sàng, chờ tới lượt gọi khám hoặc gọi cấp phát thuốc.",
+    "related": [
+      "FA03",
+      "CM05",
+      "CM06"
+    ],
+    "image": "FA04.png"
+  },
+  {
+    "id": "FA06",
+    "code": "FA06",
+    "name": "Hồ sơ Bệnh án & Lưu trữ",
+    "category": "Cơ sở & Hành chính",
+    "description": "Biểu trưng tủ hồ sơ bệnh án có đóng dấu biểu trưng y tế bảo mật.",
+    "clinical_meaning": "Phòng Kế hoạch tổng hợp & Lưu trữ bệnh án điện tử (EMR) theo chuẩn bảo mật y tế.",
+    "related": [
+      "FA05",
+      "FA07",
+      "FA08"
+    ],
+    "image": "FA06.png"
+  },
+  {
+    "id": "FA07",
+    "code": "FA07",
+    "name": "Thu ngân & Viện phí",
+    "category": "Cơ sở & Hành chính",
+    "description": "Biểu trưng quầy thanh toán viện phí, quyết toán BHYT và giao dịch tài chính.",
+    "clinical_meaning": "Quầy tài chính kế toán: nộp tạm ứng viện phí, thanh toán xuất viện và in hóa đơn điện tử.",
+    "related": [
+      "FA03",
+      "CM06",
+      "FA06"
+    ],
+    "image": "FA07.png"
+  },
+  {
+    "id": "FA08",
+    "code": "FA08",
+    "name": "Thư viện Y khoa & Đào tạo",
+    "category": "Cơ sở & Hành chính",
+    "description": "Biểu trưng cuốn sách y học mở kèm huy hiệu chữ thập y khoa quốc tế.",
+    "clinical_meaning": "Trung tâm Đào tạo và Nghiên cứu khoa học: tra cứu y văn, chỉ dẫn phác đồ điều trị.",
+    "related": [
+      "FA09",
+      "FA06",
+      "CM01"
+    ],
+    "image": "FA08.png"
+  },
+  {
+    "id": "FA10",
+    "code": "FA10",
+    "name": "Thông dịch & Hỗ trợ Ngôn ngữ",
+    "category": "Cơ sở & Hành chính",
+    "description": "Biểu trưng hai người giao tiếp qua bóng thoại đại diện dịch vụ thông dịch y khoa.",
+    "clinical_meaning": "Bộ phận hỗ trợ phiên dịch cho bệnh nhân nước ngoài và người khiếm thính/khiếm ngôn.",
+    "related": [
+      "FA03",
+      "FA11",
+      "CM08"
+    ],
+    "image": "FA10.png"
+  },
+  {
+    "id": "MA01",
+    "code": "MA01",
+    "name": "Khoa X-quang Kỹ thuật số",
+    "category": "Chẩn đoán hình ảnh",
+    "description": "Biểu trưng hộp đèn phim X-quang chụp lồng ngực và khung xương chẩn đoán.",
+    "clinical_meaning": "Chụp X-quang tim phổi, xương khớp, xoang và phát hiện dị vật đường thở.",
+    "related": [
+      "MA04",
+      "MA06",
+      "CM20"
+    ],
+    "image": "MA01.png"
+  },
+  {
+    "id": "MA03",
+    "code": "MA03",
+    "name": "Chụp Cộng hưởng từ (MRI)",
+    "category": "Chẩn đoán hình ảnh",
+    "description": "Biểu trưng máy quét MRI dạng đường hầm từ trường cao với bàn trượt bệnh nhân tự động.",
+    "clinical_meaning": "Chụp MRI sọ não, cột sống, dây chằng khớp và tủy sống với độ phân giải mô mềm cực cao.",
+    "related": [
+      "MA04",
+      "MA07",
+      "CM17"
+    ],
+    "image": "MA03.png"
+  },
+  {
+    "id": "MA04",
+    "code": "MA04",
+    "name": "Cắt lớp Vi tính (CT Scanner)",
+    "category": "Chẩn đoán hình ảnh",
+    "description": "Biểu trưng khoang xoay máy cắt lớp vi tính đa dãy đầu dò (MSCT).",
+    "clinical_meaning": "Chụp CT sọ não cấp cứu đột quỵ, CT ngực bụng đa chấn thương và tầm soát mạch vành.",
+    "related": [
+      "MA03",
+      "MA09",
+      "FA01"
+    ],
+    "image": "MA04.png"
+  },
+  {
+    "id": "MA05",
+    "code": "MA05",
+    "name": "Siêu âm Màu Chẩn đoán",
+    "category": "Chẩn đoán hình ảnh",
+    "description": "Biểu trưng đầu dò siêu âm phát sóng âm quét hình ảnh thai nhi và cơ quan nội tạng.",
+    "clinical_meaning": "Siêu âm Doppler màu tim mạch, siêu âm ổ bụng tổng quát, tuyến giáp và theo dõi thai kỳ.",
+    "related": [
+      "CM24",
+      "CM25",
+      "CM23"
+    ],
+    "image": "MA05.png"
+  },
+  {
+    "id": "MA07",
+    "code": "MA07",
+    "name": "Khu vực Máy Quét MRI",
+    "category": "Chẩn đoán hình ảnh",
+    "description": "Huy hiệu nhận diện khu vực từ trường mạnh chụp MRI chuyên biệt.",
+    "clinical_meaning": "Cảnh báo khu vực an toàn từ trường MRI, kiểm tra máy tạo nhịp và vật kim loại cấy ghép.",
+    "related": [
+      "MA03",
+      "MA08",
+      "MA09"
+    ],
+    "image": "MA07.png"
+  },
+  {
+    "id": "MA08",
+    "code": "MA08",
+    "name": "Ghi hình Phóng xạ PET-CT",
+    "category": "Chẩn đoán hình ảnh",
+    "description": "Biểu trưng hệ thống chụp cắt lớp phát xạ Positron (PET) kết hợp CT scanner.",
+    "clinical_meaning": "Trung tâm Y học hạt nhân: đánh giá chuyển hóa tế bào ung thư và di căn toàn thân.",
+    "related": [
+      "MA04",
+      "CM14",
+      "MA03"
+    ],
+    "image": "MA08.png"
+  },
+  {
+    "id": "MA09",
+    "code": "MA09",
+    "name": "Khu vực Máy Quét CT",
+    "category": "Chẩn đoán hình ảnh",
+    "description": "Huy hiệu định danh phòng chụp cắt lớp vi tính kỹ thuật cao.",
+    "clinical_meaning": "Phòng thực hiện chụp CT có chuẩn bị thuốc cản quang tĩnh mạch và máy tiêm áp lực.",
+    "related": [
+      "MA04",
+      "MA01",
+      "MA07"
+    ],
+    "image": "MA09.png"
+  },
+  {
+    "id": "FA11",
+    "code": "FA11",
+    "name": "Công tác Xã hội & Trợ giúp Người bệnh",
+    "category": "Cơ sở & Hành chính",
+    "description": "Biểu trưng đôi bàn tay nâng đỡ bảo bọc gia đình đại diện cho phòng Công tác Xã hội.",
+    "clinical_meaning": "Hỗ trợ người bệnh có hoàn cảnh khó khăn, kết nối nhà hảo tâm, tư vấn tâm lý xã hội và quyền lợi BHYT.",
+    "related": [
+      "FA03",
+      "FA10",
+      "FA07"
+    ],
+    "image": "fa11.png"
+  },
+  {
+    "id": "FA12",
+    "code": "FA12",
+    "name": "Nhà nguyện & Không gian Tâm linh",
+    "category": "Cơ sở & Hành chính",
+    "description": "Biểu trưng tháp chuông nhà nguyện và chữ thập đại diện không gian tâm linh bệnh viện.",
+    "clinical_meaning": "Nơi cầu nguyện, tĩnh tâm và hỗ trợ tinh thần cho thân nhân và bệnh nhân nặng.",
+    "related": [
+      "FA04",
+      "CM16",
+      "CM03"
+    ],
+    "image": "fa12.png"
+  },
+  {
+    "id": "MA02",
+    "code": "MA02",
+    "name": "X-quang Tuyến vú (Mammography)",
+    "category": "Chẩn đoán hình ảnh",
+    "description": "Biểu trưng máy chụp nhũ ảnh kỹ thuật số tầm soát sớm u xơ và ung thư tuyến vú.",
+    "clinical_meaning": "Tầm soát định kỳ u vú, phát hiện vi vôi hóa ác tính giai đoạn sớm ở phụ nữ.",
+    "related": [
+      "CM24",
+      "CM14",
+      "MA05"
+    ],
+    "image": "ma02.png"
+  },
+  {
+    "id": "MA06",
+    "code": "MA06",
+    "name": "Thấu thị & Chăm sóc Điều trị",
+    "category": "Chẩn đoán hình ảnh",
+    "description": "Biểu trưng màn hình tăng sáng huỳnh quang thấu thị (Fluoroscopy) và chăm sóc bệnh nhân.",
+    "clinical_meaning": "Ghi hình động thời gian thực phục vụ can thiệp đường tiêu hóa, đặt catheter và nắn chỉnh xương.",
+    "related": [
+      "MA01",
+      "MA03",
+      "CM31"
+    ],
+    "image": "ma06.png"
+  },
+  {
+    "id": "MA10",
+    "code": "MA10",
+    "name": "Máy quét CAT Scanner",
+    "category": "Chẩn đoán hình ảnh",
+    "description": "Huy hiệu định danh phòng chụp cắt lớp điện toán vi tính CAT (Computerized Axial Tomography).",
+    "clinical_meaning": "Thực hiện khảo sát mặt cắt ngang trục cơ thể, định vị tổn thương sọ não và ngực bụng cấp cứu.",
+    "related": [
+      "MA04",
+      "MA09",
+      "FA01"
+    ],
+    "image": "ma10.png"
+  }
+]
