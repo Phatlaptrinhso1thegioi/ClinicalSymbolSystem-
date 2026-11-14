@@ -452,7 +452,14 @@ def logout():
     return redirect(url_for("index"))
 
 
-if __name__ == "__main__":
+# Khởi tạo cơ sở dữ liệu và tài khoản demo ngay khi nạp ứng dụng (hỗ trợ Gunicorn, Render, Vercel)
+try:
     init_db()
+except Exception as e:
+    print(f"Warning: init_db failed: {e}")
+
+
+if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5001))
-    app.run(debug=True, port=port)
+    # Render yêu cầu lắng nghe trên 0.0.0.0
+    app.run(host="0.0.0.0", port=port, debug=False)
